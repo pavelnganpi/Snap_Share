@@ -15,7 +15,7 @@ import java.util.Locale;
  * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class SectionsPagerAdapter extends FragmentPagerAdapter {//
 
     protected Context mContext;//creating context so as to call it in the getString() getPageTitle(), since we are not in an activity
 
