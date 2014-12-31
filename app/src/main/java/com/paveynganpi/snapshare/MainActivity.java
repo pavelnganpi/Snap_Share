@@ -49,13 +49,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         //if current user is not in session, then take the user to the loginActivity
         if(currentUser == null) {
-            //start the loginActivity
-            Intent intent = new Intent(this, LoginActivity.class);
+            navigateToLogin();
 
-            //add the loginActivity to the top of stack, and clear the inbox page
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//add the loginActivity task
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//clear the previous task
-            startActivity(intent);
         }
 
         // Set up the action bar.
@@ -93,6 +88,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
+    private void navigateToLogin() {
+        //start the loginActivity
+        Intent intent = new Intent(this, LoginActivity.class);
+
+        //add the loginActivity to the top of stack, and clear the inbox page
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//add the loginActivity task
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//clear the previous task
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,16 +106,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         return true;
     }
 
+    //used to select any options in the action bar. e.g log out
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int itemId = item.getItemId();//get the id
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        //noinspection SimplifiableIfStatement. logout if item is matches with action_logout
+        if (itemId == R.id.action_logout) {
+            ParseUser.logOut();
+            //move to login screen
+            navigateToLogin();
         }
 
         return super.onOptionsItemSelected(item);

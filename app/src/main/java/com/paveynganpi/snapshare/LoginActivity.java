@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +28,9 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);//used for adding a spinner to show user time of execution
         setContentView(R.layout.activity_login);
 
         mSignUpTextView = (TextView) findViewById(R.id.signUpText);
@@ -50,7 +54,7 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                //get thier various strings
+                //get their various strings
                 String username = mUsername.getText().toString();
                 String password = mPassword.getText().toString();
 
@@ -58,7 +62,7 @@ public class LoginActivity extends ActionBarActivity {
                 username.trim();
                 password.trim();
 
-                //if user lives any text fields blanck
+                //if user leaves any text fields blank
                 if(username.isEmpty() || password.isEmpty()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                     builder.setMessage(R.string.login_error_message);//creates a dialog with this message
@@ -70,11 +74,13 @@ public class LoginActivity extends ActionBarActivity {
                 }
                 //the user put in good data, logging in
                 else{
+                    //login
+                  setProgressBarIndeterminateVisibility(true);//show the progress bar
 
                    ParseUser.logInInBackground(username, password, new LogInCallback() {
                        @Override
                        public void done(ParseUser user, ParseException e) {
-
+                           setProgressBarIndeterminateVisibility(false);//remove progress bar after we have response from parse
                            if(e == null){
                                //success
 

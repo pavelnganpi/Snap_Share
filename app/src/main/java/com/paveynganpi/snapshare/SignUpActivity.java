@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -26,6 +27,7 @@ public class SignUpActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);//used for adding a spinner to show user time of execution
         setContentView(R.layout.activity_sign_up);
 
         //initialize the instance variables with the respect data in the txt fields
@@ -60,7 +62,7 @@ public class SignUpActivity extends ActionBarActivity {
                 }
                 //the user put in good data, create a user
                 else{
-
+                    setProgressBarIndeterminate(true);//starts spinner
                     ParseUser newUser = new ParseUser();
                     newUser.setUsername(username);
                     newUser.setPassword(password);
@@ -73,6 +75,7 @@ public class SignUpActivity extends ActionBarActivity {
                         @Override
                         public void done(com.parse.ParseException e) {
 
+                            setProgressBarIndeterminate(false);//spinner after response from parse
                             //success
                             if( e == null){
 
