@@ -19,6 +19,8 @@
     <string name="signup_error_message">Please enter a username,password and email address!</string>
     <string name="login_error_title">Ooops!</string>
     <string name="login_error_message">Please enter a username and password</string>
+    <string name="empty_inbox_label">no new messages</string>
+    <string name="empty_friends_label">add friends to begin</string>
 
 
 </resources>
