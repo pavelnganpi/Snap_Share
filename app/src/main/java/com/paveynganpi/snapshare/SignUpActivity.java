@@ -1,17 +1,65 @@
 package com.paveynganpi.snapshare;
 
+import android.app.AlertDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 public class SignUpActivity extends ActionBarActivity {
+
+    protected EditText mUsername;
+    protected EditText mPassword;
+    protected EditText mEmail;
+    protected Button mSignUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        //initialize the instance variables with the respect data in the txt fields
+        mUsername = (EditText)findViewById(R.id.usernameField);
+        mPassword = (EditText)findViewById(R.id.passwordField);
+        mEmail = (EditText)findViewById(R.id.emailField);
+        mSignUpButton = (Button)findViewById(R.id.signUpButton);
+
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //get thier various strings
+                String username = mUsername.getText().toString();
+                String password = mPassword.getText().toString();
+                String email = mEmail.getText().toString();
+
+                //remove extra white spaces
+                username.trim();
+                password.trim();
+                email.trim();
+
+                //if user lives any text fields blanck
+                if(username.isEmpty() || password.isEmpty() || email.isEmpty()){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+                    builder.setMessage(R.string.signup_error_message);//creates a dialog with this message
+                    builder.setTitle(R.string.signup_error_title);
+                    builder.setPositiveButton(android.R.string.ok,null);//creates a button to dismiss the dialog
+
+                    AlertDialog dialog = builder.create();//create a dialog
+                    dialog.show();//show the dialog
+                }
+                else{
+
+                }
+
+            }
+        });
+
+
     }
 
 
