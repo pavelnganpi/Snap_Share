@@ -21,6 +21,8 @@
     <string name="login_error_message">Please enter a username and password</string>
     <string name="empty_inbox_label">no new messages</string>
     <string name="empty_friends_label">add friends to begin</string>
-
+    <string name="menu_edit_friends_label">Edit Friends</string>
+    <string name="title_activity_edit_friends">Edit Friends</string>
+    <string name="error_title">We\'re Sorry!</string>
 
 </resources>
