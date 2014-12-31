@@ -16,6 +16,9 @@
     <string name="email_hint">Email</string>
     <string name="sign_up_button_label">Sign Up</string>
     <string name="signup_error_title">Ooops!</string>
-    <string name="signup_error_message">Please enter a username,passwords and email address!</string>
+    <string name="signup_error_message">Please enter a username,password and email address!</string>
+    <string name="login_error_title">Ooops!</string>
+    <string name="login_error_message">Please enter a username and password</string>
+
 
 </resources>

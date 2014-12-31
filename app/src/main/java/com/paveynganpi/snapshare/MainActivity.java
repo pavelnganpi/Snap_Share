@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.parse.ParseUser;
+
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -42,13 +44,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //start the loginActivity
-        Intent intent = new Intent(this, LoginActivity.class);
+        //check if current user is still in session
+        ParseUser currentUser = ParseUser.getCurrentUser();
 
-        //add the loginActivity to the top of stack, and clear the inbox page
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//add the loginActivity task
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//clear the previous task
-        startActivity(intent);
+        //if current user is not in session, then take the user to the loginActivity
+        if(currentUser == null) {
+            //start the loginActivity
+            Intent intent = new Intent(this, LoginActivity.class);
+
+            //add the loginActivity to the top of stack, and clear the inbox page
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//add the loginActivity task
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//clear the previous task
+            startActivity(intent);
+        }
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();

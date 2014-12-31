@@ -58,7 +58,7 @@ public class SignUpActivity extends ActionBarActivity {
                     AlertDialog dialog = builder.create();//create a dialog
                     dialog.show();//show the dialog
                 }
-                //the user put in good data
+                //the user put in good data, create a user
                 else{
 
                     ParseUser newUser = new ParseUser();
