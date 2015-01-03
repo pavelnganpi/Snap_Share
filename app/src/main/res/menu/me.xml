@@ -12,7 +12,6 @@
         android:title="@string/menu_camera_label"
         android:icon="@drawable/ic_action_camera"
         app:showAsAction="always"
-
         />
 
     <item android:id="@+id/action_edit_friends"
