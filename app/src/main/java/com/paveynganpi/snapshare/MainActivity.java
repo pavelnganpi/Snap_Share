@@ -68,24 +68,24 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
                         startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
                     }
+                    break;
 
                 case 1://take vid
-//                    Intent takeVideoIntent = new Intent((MediaStore.ACTION_VIDEO_CAPTURE));
-//                    mMediaUri = getOutPutMediaFileUri(MEDIA_TYPE_VIDEO);
-//                    if(mMediaUri == null){
-//
-//                        //error
-//                        Toast.makeText(MainActivity.this,R.string.error_external_storage,Toast.LENGTH_LONG).show();
-//
-//                    }
-//                    else {
-//                        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
-//
-//                        startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
-//                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,10);//max length of video
-//                        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);//low video quality
-//                        startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
-//                    }
+                    Intent takeVideoIntent = new Intent((MediaStore.ACTION_VIDEO_CAPTURE));
+                    mMediaUri = getOutPutMediaFileUri(MEDIA_TYPE_VIDEO);
+                    if(mMediaUri == null){
+
+                        //error
+                        Toast.makeText(MainActivity.this,R.string.error_external_storage,Toast.LENGTH_LONG).show();
+
+                    }
+                    else {
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,10);//max length of video
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);//low video quality
+                        startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
+                    }
+                    break;
 
                 case 2://choose pic
 
@@ -133,17 +133,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 //now depending on media type, give the right extensions
                 if(mediaType == MEDIA_TYPE_IMAGE){
                     mediaFile = new File(path + "IMG_"+ timestamp + ".jpg");
+                    //Log.d(TAG,"this is a picture");
 
                 }
                 else if(mediaType == MEDIA_TYPE_VIDEO){
 
-                    mediaFile = new File(path + "VID" + timestamp + ".mp4");
+                    mediaFile = new File(path + "VID_" + timestamp + ".mp4");
+                    //Log.d(TAG,"this is a video");
+
 
                 }
                 else{
                     return null;
                 }
-                Log.d(TAG, "FILE "+Uri.fromFile(mediaFile));
+                //Log.d(TAG, "FILE "+Uri.fromFile(mediaFile));
 
                 //return the file's uri
 
@@ -247,10 +250,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             mediaScanIntent.setData(mMediaUri);
             sendBroadcast(mediaScanIntent);
+            //Log.d(TAG,"requestcode: " + requestCode + " resultcode "+ resultCode + "data "+ data + " resultOk "+RESULT_OK
+            //+ " Result-Cancel "+ RESULT_CANCELED);
 
         }
-
-        if(resultCode !=RESULT_CANCELED){
+        else if(resultCode !=RESULT_CANCELED){
             Toast.makeText(MainActivity.this,R.string.general_error,Toast.LENGTH_LONG).show();
 
         }
