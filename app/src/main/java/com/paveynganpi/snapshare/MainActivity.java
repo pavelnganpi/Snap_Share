@@ -25,6 +25,9 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -42,6 +45,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     public static final int MEDIA_TYPE_IMAGE = 4;
     public static final int MEDIA_TYPE_VIDEO = 5;
+
+    public static final int FILE_SIZE_LIMIT = 1024*1024*10;//10MB
 
     protected Uri mMediaUri;
 
@@ -88,8 +93,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     break;
 
                 case 2://choose pic
+                    Intent choosePhotoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    choosePhotoIntent.setType("image/*");
+                    startActivityForResult(choosePhotoIntent,PICK_PHOTO_REQUEST);
 
                 case 3://choose vid
+                    Intent chooseVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    chooseVideoIntent.setType("video/*");
+                    Toast.makeText(MainActivity.this,getString(R.string.video_file_size_warning),Toast.LENGTH_LONG).show();
+                    startActivityForResult(chooseVideoIntent, PICK_VIDEO_REQUEST);
 
 
             }
@@ -245,14 +257,62 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
-            //success, save to gallery
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            mediaScanIntent.setData(mMediaUri);
-            sendBroadcast(mediaScanIntent);
-            //Log.d(TAG,"requestcode: " + requestCode + " resultcode "+ resultCode + "data "+ data + " resultOk "+RESULT_OK
-            //+ " Result-Cancel "+ RESULT_CANCELED);
+        if(resultCode == RESULT_OK) {
+            //success
+            //for case of choose a picture, it return a Uri, so we store it
+            if (requestCode == PICK_PHOTO_REQUEST || requestCode == PICK_VIDEO_REQUEST) {
 
+                if (data == null) {
+                    Toast.makeText(this, getString(R.string.general_error), Toast.LENGTH_LONG);
+                } else {
+                    mMediaUri = data.getData();
+                }
+
+                if(requestCode == PICK_VIDEO_REQUEST){
+                    //make sure the file is less than 10MB
+                    int fileSize = 0;
+                    InputStream inputStream = null;
+                    try {
+                        inputStream = getContentResolver().openInputStream(mMediaUri);//get the bytes
+                        fileSize = inputStream.available();//gets the size
+                    }
+                    catch(FileNotFoundException e){
+                        Toast.makeText(this, getString(R.string.error_opening_file), Toast.LENGTH_LONG);
+                        return;
+                    }
+                    catch(IOException e){
+                        Toast.makeText(this, getString(R.string.error_opening_file), Toast.LENGTH_LONG);
+                        return;
+
+                    }
+                    finally {
+                        //always gets executed. always close the inputstream
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                           /* this is intentionally blank */
+                        }
+
+                    }
+
+                    if(FILE_SIZE_LIMIT <=fileSize){
+                        Toast.makeText(this, getString(R.string.error_file_size_too_large), Toast.LENGTH_LONG);
+                            return; //avoid going down
+                    }
+
+
+                }
+
+            }
+            else {
+                //save to galery
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScanIntent.setData(mMediaUri);
+                sendBroadcast(mediaScanIntent);
+                //Log.d(TAG,"requestcode: " + requestCode + " resultcode "+ resultCode + "data "+ data + " resultOk "+RESULT_OK
+                //+ " Result-Cancel "+ RESULT_CANCELED);
+
+            }
         }
         else if(resultCode !=RESULT_CANCELED){
             Toast.makeText(MainActivity.this,R.string.general_error,Toast.LENGTH_LONG).show();
@@ -326,19 +386,3 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
 
 }
-//Intent takeVideoIntent = new Intent((MediaStore.ACTION_VIDEO_CAPTURE));
-//                    mMediaUri = getOutPutMediaFileUri(MEDIA_TYPE_VIDEO);
-//                    if(mMediaUri == null){
-//
-//                        //error
-//                        Toast.makeText(MainActivity.this,R.string.error_external_storage,Toast.LENGTH_LONG).show();
-//
-//                    }
-//                    else {
-//                        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
-//
-//                        startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
-//                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,10);//max length of video
-//                        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);//low video quality
-//                        startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
-//                    }

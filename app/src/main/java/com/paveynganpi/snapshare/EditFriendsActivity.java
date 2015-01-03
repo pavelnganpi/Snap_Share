@@ -85,7 +85,7 @@ public class EditFriendsActivity extends ActionBarActivity  {
 
         mCurrentUser = ParseUser.getCurrentUser();
         mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
-        setProgressBarIndeterminateVisibility(true);
+        setSupportProgressBarIndeterminateVisibility(true);
 
 
 
@@ -97,7 +97,7 @@ public class EditFriendsActivity extends ActionBarActivity  {
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> users, ParseException e) {
-                setProgressBarIndeterminateVisibility(false);
+                setSupportProgressBarIndeterminateVisibility(false);
                 if (e == null) {
                     //success
                     mUsers = users;
