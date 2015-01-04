@@ -15,6 +15,6 @@
     <TextView
         android:layout_width="match_parent"
         android:id="@android:id/empty"
-        android:text="@string/empty_friends_label"
+        android:text="@string/empty_recipients_list_message"
         android:layout_height="wrap_content"/>
 </RelativeLayout>

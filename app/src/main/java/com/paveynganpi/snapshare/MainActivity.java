@@ -96,12 +96,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     Intent choosePhotoIntent = new Intent(Intent.ACTION_GET_CONTENT);
                     choosePhotoIntent.setType("image/*");
                     startActivityForResult(choosePhotoIntent,PICK_PHOTO_REQUEST);
+                    break;
 
                 case 3://choose vid
                     Intent chooseVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
                     chooseVideoIntent.setType("video/*");
                     Toast.makeText(MainActivity.this,getString(R.string.video_file_size_warning),Toast.LENGTH_LONG).show();
                     startActivityForResult(chooseVideoIntent, PICK_VIDEO_REQUEST);
+                    break;
 
 
             }
@@ -313,6 +315,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 //+ " Result-Cancel "+ RESULT_CANCELED);
 
             }
+
+            Intent recipientIntent = new Intent(this, RecipientsActivity.class);
+            recipientIntent.setData(mMediaUri);
+            startActivity(recipientIntent);
+           // Log.d(TAG,"good job");
+
         }
         else if(resultCode !=RESULT_CANCELED){
             Toast.makeText(MainActivity.this,R.string.general_error,Toast.LENGTH_LONG).show();
