@@ -16,12 +16,14 @@ import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,7 +174,23 @@ public class RecipientsActivity extends ActionBarActivity {
         message.put(ParseConstants.KEY_RECIPIENT_IDS,getRecipientId());
         message.put(ParseConstants.KEY_FILE_TYPE,mFileType);
 
-        return message;
+        byte[] fileBytes = FileHelper.getByteArrayFromFile(this,mMedialUri);
+
+        if(fileBytes == null){
+            return null;
+        }
+        else {
+            if (mFileType == ParseConstants.TYPE_IMAGE) {
+                fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+
+            }
+
+            String fileName = FileHelper.getFileName(this,mMedialUri,mFileType);
+            ParseFile file = new ParseFile(fileName,fileBytes);
+            message.put(ParseConstants.KEY_FILE,file);
+            return message;
+        }
+
     }
 
     protected ArrayList<String> getRecipientId(){
