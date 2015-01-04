@@ -25,4 +25,5 @@ dependencies {
     compile fileTree('src/main/libs')
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
+    compile files('libs/commons-io-2.4.jar')
 }

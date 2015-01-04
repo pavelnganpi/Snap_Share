@@ -317,7 +317,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
 
             Intent recipientIntent = new Intent(this, RecipientsActivity.class);
+            //type of the file, .jpg or .mp4
+            String fileType;
+            if(requestCode == TAKE_PHOTO_REQUEST || requestCode == PICK_PHOTO_REQUEST){
+                fileType = ParseConstants.TYPE_IMAGE;
+            }
+            else{
+                fileType = ParseConstants.TYPE_VIDEO;
+            }
+
             recipientIntent.setData(mMediaUri);
+            recipientIntent.putExtra(ParseConstants.KEY_FILE_TYPE,fileType);
             startActivity(recipientIntent);
            // Log.d(TAG,"good job");
 

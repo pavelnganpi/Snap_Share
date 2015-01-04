@@ -1,6 +1,7 @@
 package com.paveynganpi.snapshare;
 
 import android.app.AlertDialog;
+import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ public class RecipientsActivity extends ActionBarActivity {
     protected ParseRelation<ParseUser> mFriendsRelation;
     protected ParseUser mCurrentUser;
     protected MenuItem mSendMenuItem;
+    protected Uri mMedialUri;
+    protected String mFileType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,9 @@ public class RecipientsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_recipients);
         getListView().setChoiceMode(mListView.CHOICE_MODE_MULTIPLE);
 
+        //get the uri data from the MainActivity
+        mMedialUri = getIntent().getData();
+        mFileType = getIntent().getExtras().getString(ParseConstants.KEY_FILE_TYPE);
 
         //when an item on the list is clicked, set the button to be visible
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -164,6 +170,7 @@ public class RecipientsActivity extends ActionBarActivity {
         message.put(ParseConstants.KEY_SENDER_ID, ParseUser.getCurrentUser().getObjectId());
         message.put(ParseConstants.KEY_SENDER_NAME,ParseUser.getCurrentUser().getUsername());
         message.put(ParseConstants.KEY_RECIPIENT_IDS,getRecipientId());
+        message.put(ParseConstants.KEY_FILE_TYPE,mFileType);
 
         return message;
     }
