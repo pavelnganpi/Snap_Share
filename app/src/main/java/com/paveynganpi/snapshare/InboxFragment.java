@@ -1,14 +1,18 @@
 package com.paveynganpi.snapshare;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -26,6 +30,38 @@ public class InboxFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_inbox, container, false);
+
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                ParseObject message = mMessages.get(position);
+                String messageType = message.getString(ParseConstants.KEY_FILE_TYPE);//get the file type
+                ParseFile file = message.getParseFile(ParseConstants.KEY_FILE);//gets file from parse
+                Uri fileUri = Uri.parse(file.getUrl());//convert url to uri
+
+                if(messageType.equals(ParseConstants.TYPE_IMAGE)){
+                //view image
+
+                    Intent intent = new Intent(getActivity(),ViewImageActivity.class);
+                    intent.setData(fileUri);
+                    startActivity(intent);
+
+                }
+                else{
+                //view video
+
+
+
+                }
+
+
+
+
+            }
+        });
+
         return rootView;
     }
 
