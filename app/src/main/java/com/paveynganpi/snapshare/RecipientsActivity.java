@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -147,7 +148,20 @@ public class RecipientsActivity extends ActionBarActivity {
         switch (id) {
             case R.id.action_send:
                 ParseObject message = createMessages();
-                //send(message);
+
+                if(message == null){
+                    //error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage(getString(R.string.error_selecting_file))
+                            .setTitle(getString(R.string.error_selecting_file_title));
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                }
+                else {
+                    send(message);
+                    finish();//move out of this activity, and next in stack comes up
+                }
                 return true;
             case R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
@@ -180,7 +194,7 @@ public class RecipientsActivity extends ActionBarActivity {
             return null;
         }
         else {
-            if (mFileType == ParseConstants.TYPE_IMAGE) {
+            if (mFileType.equals(ParseConstants.TYPE_IMAGE)) {
                 fileBytes = FileHelper.reduceImageForUpload(fileBytes);
 
             }
@@ -205,6 +219,35 @@ public class RecipientsActivity extends ActionBarActivity {
 
         }
         return recipientIds;
+
+    }
+
+    protected void send(ParseObject message){
+
+        message.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+
+                if( e == null){
+                    //success
+                    Toast.makeText(RecipientsActivity.this,getString(R.string.success_message),Toast.LENGTH_LONG).show();
+
+                }
+                else{
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RecipientsActivity.this);
+                    builder.setMessage(getString(R.string.error_sending_message))
+                            .setTitle(getString(R.string.error_selecting_file_title))
+                            .setPositiveButton(android.R.string.ok,null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+
+                }
+
+
+            }
+        });
 
     }
 
