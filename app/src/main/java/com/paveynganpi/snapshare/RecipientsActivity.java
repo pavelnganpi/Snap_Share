@@ -58,7 +58,7 @@ public class RecipientsActivity extends ActionBarActivity {
 
                 int count = getListView().getCheckedItemCount();
                 if(count>=1){
-                    Log.d(TAG,"count "+count);
+                    //Log.d(TAG,"count "+count);
                     mSendMenuItem.setVisible(true);
                 }
                 else{

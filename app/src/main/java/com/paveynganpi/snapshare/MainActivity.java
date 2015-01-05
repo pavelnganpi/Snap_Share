@@ -20,8 +20,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.File;
@@ -30,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -49,7 +57,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public static final int FILE_SIZE_LIMIT = 1024*1024*10;//10MB
 
     protected Uri mMediaUri;
-
 
     //listener which runs when any of the items on the alert dialog are clicked. i.e choose picture ...
     protected DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
@@ -86,7 +93,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     }
                     else {
                         takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
-                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,10);//max length of video
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,3);//max length of video
                         takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);//low video quality
                         startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
                     }
@@ -401,6 +408,5 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
-
 
 }
