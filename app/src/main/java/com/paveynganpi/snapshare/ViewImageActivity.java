@@ -1,5 +1,6 @@
 package com.paveynganpi.snapshare;
 
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
 import com.parse.ParseException;
 import com.parse.SaveCallback;
@@ -17,6 +19,12 @@ public class ViewImageActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_image);
+
+        ImageView imageView = (ImageView)findViewById(R.id.imageView);
+        Uri imageUri = getIntent().getData();
+
+
+
     }
 
 
