@@ -49,11 +49,15 @@
         <activity
             android:name=".RecipientsActivity"
             android:label="@string/title_activity_recipients"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paveynganpi.snapshare.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ViewImageActivity"
+            android:label="@string/title_activity_view_image" >
         </activity>
     </application>
 
