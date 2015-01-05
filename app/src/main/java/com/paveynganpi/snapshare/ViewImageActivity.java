@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.parse.ParseException;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 
 public class ViewImageActivity extends ActionBarActivity {
 
@@ -23,7 +24,7 @@ public class ViewImageActivity extends ActionBarActivity {
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         Uri imageUri = getIntent().getData();
 
-
+        Picasso.with(this).load(imageUri.toString()).into(imageView);
 
     }
 

@@ -3,6 +3,7 @@ package com.paveynganpi.snapshare;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,13 @@ public class InboxFragment extends ListFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_inbox, container, false);
 
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -42,7 +50,7 @@ public class InboxFragment extends ListFragment {
                 Uri fileUri = Uri.parse(file.getUrl());//convert url to uri
 
                 if(messageType.equals(ParseConstants.TYPE_IMAGE)){
-                //view image
+                    //view image
 
                     Intent intent = new Intent(getActivity(),ViewImageActivity.class);
                     intent.setData(fileUri);
@@ -50,19 +58,15 @@ public class InboxFragment extends ListFragment {
 
                 }
                 else{
-                //view video
+                    //view video
 
 
 
                 }
 
-
-
-
             }
         });
 
-        return rootView;
     }
 
     @Override
