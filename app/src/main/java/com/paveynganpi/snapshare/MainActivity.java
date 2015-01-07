@@ -226,6 +226,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         }
 
+        //shows the ic_launcher logo on the action bar
+        getSupportActionBar().setLogo(R.drawable.ic_launcher);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
