@@ -58,6 +58,7 @@
         <activity
             android:name=".ViewImageActivity"
             android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
             android:label="@string/title_activity_view_image" >
         </activity>
     </application>

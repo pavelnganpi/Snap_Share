@@ -42,10 +42,13 @@ public class MessageAdapter extends ArrayAdapter {
             holder = new ViewHolder();
             holder.iconImageView = (ImageView) convertView.findViewById(R.id.messageIcon);
             holder.nameLabel = (TextView) convertView.findViewById(R.id.senderLabel);
+            convertView.setTag(holder);//makes our listview scroll
         }
         else{
 
             holder = (ViewHolder)convertView.getTag();//gets the view holder that was already created
+            //if tag is no set as above, error will result due to the fact we are trying to retrieve a tag
+            //that is no longer available
 
         }
 
@@ -67,4 +70,14 @@ public class MessageAdapter extends ArrayAdapter {
         TextView nameLabel;
 
     }
+
+    //to refill the messageAdapter
+    public void refill(List<ParseObject> messages){
+
+        mMessages.clear();
+        mMessages.addAll(messages);
+        notifyDataSetChanged();
+
+    }
+
 }

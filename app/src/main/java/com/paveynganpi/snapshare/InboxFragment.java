@@ -59,10 +59,14 @@ public class InboxFragment extends ListFragment {
                 }
                 else{
                     //view video
-
+                    Intent intent = new Intent(Intent.ACTION_VIEW,fileUri);
+                    intent.setDataAndType(fileUri, "video/*");
+                    startActivity(intent);
 
 
                 }
+                //delete
+
 
             }
         });
@@ -92,17 +96,17 @@ public class InboxFragment extends ListFragment {
                         i++;
 
                     }
+                    //if messageAdapter does not exist, then create it
+                    if(getListView().getAdapter() == null) {
+                        MessageAdapter adapter = new MessageAdapter(getListView().getContext(), mMessages);
+                        setListAdapter(adapter);
 
-                    MessageAdapter adapter = new MessageAdapter(getListView().getContext(),mMessages);
-
-                    //get reference to the list view
-
-                    setListAdapter(adapter);
-
-
-                }
-                else{
-
+                    }
+                    else{
+                        //if it exists, no need to recreate it,
+                        //just set the data on the listview
+                        ((MessageAdapter)getListView().getAdapter()).refill(mMessages);
+                    }
 
                 }
 
