@@ -1,5 +1,6 @@
 package com.paveynganpi.snapshare;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -29,9 +30,13 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);//used for adding a spinner to show user time of execution
         setContentView(R.layout.activity_login);
+
+        //hide the action bar
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
 
         mSignUpTextView = (TextView) findViewById(R.id.signUpText);
 

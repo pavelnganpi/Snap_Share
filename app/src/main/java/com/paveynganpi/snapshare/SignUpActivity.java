@@ -1,5 +1,6 @@
 package com.paveynganpi.snapshare;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -29,6 +30,10 @@ public class SignUpActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);//used for adding a spinner to show user time of execution
         setContentView(R.layout.activity_sign_up);
+
+        //hide the action bar
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         //initialize the instance variables with the respect data in the txt fields
         mUsername = (EditText)findViewById(R.id.usernameField);
