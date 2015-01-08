@@ -67,7 +67,7 @@ public class SignUpActivity extends ActionBarActivity {
                 }
                 //the user put in good data, create a user
                 else{
-                    setProgressBarIndeterminate(true);//starts spinner
+                    setSupportProgressBarIndeterminate(true);//starts spinner
                     ParseUser newUser = new ParseUser();
                     newUser.setUsername(username);
                     newUser.setPassword(password);
@@ -80,7 +80,7 @@ public class SignUpActivity extends ActionBarActivity {
                         @Override
                         public void done(com.parse.ParseException e) {
 
-                            setProgressBarIndeterminate(false);//spinner after response from parse
+                            setSupportProgressBarIndeterminate(false);//spinner after response from parse
                             //success
                             if( e == null){
 
