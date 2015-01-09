@@ -11,7 +11,7 @@
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="login_button_label">Login</string>
-    <string name="sign_up_text">Sign Up!</string>
+    <string name="sign_up_text">Dont have an account?Sign Up!</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="email_hint">Email</string>
     <string name="sign_up_button_label">Sign Up</string>
@@ -47,5 +47,6 @@
     <string name="error_sending_message">There was an error sending your message, Please try again</string>
     <string name="title_activity_view_image">SnapShare</string>
     <string name="content_desc_background">SnapShare background Image</string>
+    <string name="subtitle">A place to connect with friends</string>
 
 </resources>
