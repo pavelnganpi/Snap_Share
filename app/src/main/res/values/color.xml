@@ -2,4 +2,5 @@
 <resources>
     <color name="light_gray">#bbbbbb</color>
     <color name="background_purple">#3F2466</color>
+    <color name="apptheme_color">#6c4799</color>
 </resources>
