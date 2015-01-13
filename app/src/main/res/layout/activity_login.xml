@@ -2,7 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                style="@style/AuthBackground"
                 tools:context="com.paveynganpi.snapshare.LoginActivity">
 
     <ImageButton
@@ -83,7 +83,12 @@
         android:id="@+id/loginButton"
         android:layout_below="@id/editTextLayout"
         android:layout_alignLeft="@+id/imageButton"
-        android:layout_alignStart="@+id/imageButton"/>
+        android:background="@drawable/button_custom"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_alignStart="@+id/imageButton"
+        android:textSize="13sp"
+        android:textColor="@color/text_color"/>
 
     <TextView
         android:layout_width="wrap_content"
