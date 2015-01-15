@@ -41,6 +41,7 @@
 
     <style name="Theme.Snapshare.lightPurpleBackground">
         <item name="android:background">@color/light_purple_background</item>
+        <item name="android:divider">@null</item>
     </style>
     
     <style name="Theme.Snapshare.Overflow" parent="@android:style/Widget.ActionButton.Overflow">

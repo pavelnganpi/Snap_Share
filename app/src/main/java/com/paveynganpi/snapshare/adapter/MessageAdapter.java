@@ -1,6 +1,7 @@
 package com.paveynganpi.snapshare.adapter;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.parse.ParseObject;
 import com.paveynganpi.snapshare.utils.ParseConstants;
 import com.paveynganpi.snapshare.R;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +45,7 @@ public class MessageAdapter extends ArrayAdapter {
             holder = new ViewHolder();
             holder.iconImageView = (ImageView) convertView.findViewById(R.id.messageIcon);
             holder.nameLabel = (TextView) convertView.findViewById(R.id.senderLabel);
+            holder.timeLabel = (TextView)convertView.findViewById(R.id.timeLabel);
             convertView.setTag(holder);//makes our listview scroll
         }
         else{
@@ -54,6 +57,15 @@ public class MessageAdapter extends ArrayAdapter {
         }
 
         ParseObject message = mMessages.get(position);
+
+
+        Date createdAt = message.getCreatedAt();//get the date the message was created from parse backend
+        long now = new Date().getTime();//get current date
+        String convertedDate = DateUtils.getRelativeTimeSpanString(
+                createdAt.getTime(),now,DateUtils.SECOND_IN_MILLIS).toString();
+        holder.timeLabel.setText(convertedDate);
+
+
         if(message.getString(ParseConstants.KEY_FILE_TYPE).equals(ParseConstants.TYPE_IMAGE)) {
             holder.iconImageView.setImageResource(R.drawable.ic_picture);
         }
@@ -69,6 +81,7 @@ public class MessageAdapter extends ArrayAdapter {
 
         ImageView iconImageView;
         TextView nameLabel;
+        TextView timeLabel;
 
     }
 
