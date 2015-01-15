@@ -63,7 +63,7 @@ public class MessageAdapter extends ArrayAdapter {
         long now = new Date().getTime();//get current date
         String convertedDate = DateUtils.getRelativeTimeSpanString(
                 createdAt.getTime(),now,DateUtils.SECOND_IN_MILLIS).toString();
-        holder.timeLabel.setText(convertedDate);
+        holder.timeLabel.setText(convertedDate); //sets the converted date into the message_item.xml view
 
 
         if(message.getString(ParseConstants.KEY_FILE_TYPE).equals(ParseConstants.TYPE_IMAGE)) {
