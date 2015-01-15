@@ -35,6 +35,12 @@
         <item name="android:editTextBackground">@drawable/apptheme_edit_text_holo_light</item>
         <item name="android:actionOverflowButtonStyle">@style/Theme.Snapshare.Overflow</item>
         <item name="colorPrimary">@color/focused_purple_button</item>
+        <item name="android:listViewStyle">@style/Theme.Snapshare.lightPurpleBackground</item>
+        <item name="android:gridViewStyle">@style/Theme.Snapshare.lightPurpleBackground</item>
+    </style>
+
+    <style name="Theme.Snapshare.lightPurpleBackground">
+        <item name="android:background">@color/light_purple_background</item>
     </style>
     
     <style name="Theme.Snapshare.Overflow" parent="@android:style/Widget.ActionButton.Overflow">
