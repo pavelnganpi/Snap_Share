@@ -1,4 +1,4 @@
-package com.paveynganpi.snapshare;
+package com.paveynganpi.snapshare.ui;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -17,6 +16,9 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.paveynganpi.snapshare.adapter.MessageAdapter;
+import com.paveynganpi.snapshare.utils.ParseConstants;
+import com.paveynganpi.snapshare.R;
 
 import java.util.ArrayList;
 import java.util.List;

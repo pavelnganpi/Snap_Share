@@ -1,4 +1,4 @@
-package com.paveynganpi.snapshare;
+package com.paveynganpi.snapshare.ui;
 
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.parse.ParseException;
 import com.parse.SaveCallback;
+import com.paveynganpi.snapshare.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.Timer;

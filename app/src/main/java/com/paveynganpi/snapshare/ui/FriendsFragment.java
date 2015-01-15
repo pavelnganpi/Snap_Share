@@ -1,4 +1,4 @@
-package com.paveynganpi.snapshare;
+package com.paveynganpi.snapshare.ui;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -8,13 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.paveynganpi.snapshare.utils.ParseConstants;
+import com.paveynganpi.snapshare.R;
 
 import java.util.List;
 

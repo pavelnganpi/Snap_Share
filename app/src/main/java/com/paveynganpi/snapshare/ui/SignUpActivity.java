@@ -1,6 +1,5 @@
-package com.paveynganpi.snapshare;
+package com.paveynganpi.snapshare.ui;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -14,8 +13,7 @@ import android.widget.EditText;
 
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-
-import java.text.ParseException;
+import com.paveynganpi.snapshare.R;
 
 
 public class SignUpActivity extends ActionBarActivity {

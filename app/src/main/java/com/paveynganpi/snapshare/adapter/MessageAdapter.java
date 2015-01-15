@@ -1,4 +1,4 @@
-package com.paveynganpi.snapshare;
+package com.paveynganpi.snapshare.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.parse.Parse;
 import com.parse.ParseObject;
+import com.paveynganpi.snapshare.utils.ParseConstants;
+import com.paveynganpi.snapshare.R;
 
 import java.util.List;
 

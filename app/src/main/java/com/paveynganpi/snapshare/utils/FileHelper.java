@@ -1,4 +1,4 @@
-package com.paveynganpi.snapshare;
+package com.paveynganpi.snapshare.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

@@ -1,4 +1,4 @@
-package com.paveynganpi.snapshare;
+package com.paveynganpi.snapshare.adapter;
 
 /**
  * Created by paveynganpi on 12/31/14.
@@ -8,6 +8,10 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.paveynganpi.snapshare.R;
+import com.paveynganpi.snapshare.ui.FriendsFragment;
+import com.paveynganpi.snapshare.ui.InboxFragment;
 
 import java.util.Locale;
 

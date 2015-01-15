@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 style="@style/AuthBackground"
-                tools:context="com.paveynganpi.snapshare.LoginActivity">
+                tools:context="com.paveynganpi.snapshare.ui.LoginActivity">
 
     <ImageView
         android:id="@+id/imageButton"

@@ -1,4 +1,4 @@
-package com.paveynganpi.snapshare;
+package com.paveynganpi.snapshare.utils;
 
 /**
  * Created by paveynganpi on 12/31/14.

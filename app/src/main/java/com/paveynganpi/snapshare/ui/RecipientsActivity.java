@@ -1,4 +1,4 @@
-package com.paveynganpi.snapshare;
+package com.paveynganpi.snapshare.ui;
 
 import android.app.AlertDialog;
 import android.net.Uri;
@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -23,8 +22,10 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.paveynganpi.snapshare.utils.FileHelper;
+import com.paveynganpi.snapshare.utils.ParseConstants;
+import com.paveynganpi.snapshare.R;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -188,7 +189,7 @@ public class RecipientsActivity extends ActionBarActivity {
         message.put(ParseConstants.KEY_RECIPIENT_IDS,getRecipientId());
         message.put(ParseConstants.KEY_FILE_TYPE,mFileType);
 
-        byte[] fileBytes = FileHelper.getByteArrayFromFile(this,mMedialUri);
+        byte[] fileBytes = FileHelper.getByteArrayFromFile(this, mMedialUri);
 
         if(fileBytes == null){
             return null;
