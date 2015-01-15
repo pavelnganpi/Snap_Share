@@ -146,7 +146,7 @@ public class InboxFragment extends ListFragment {
     protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            Toast.makeText(getActivity(),"We're refreshing",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"We're refreshing",Toast.LENGTH_SHORT).show();//toast
 
         }
     };
