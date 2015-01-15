@@ -16,7 +16,8 @@
 
     <TextView
         android:id="@+id/subtitle"
-        style="@style/AuthSubTitle"/>
+        style="@style/AuthSubTitle"
+        android:layout_width="match_parent"/>
 
     <LinearLayout
         android:id="@+id/editTextLayout"

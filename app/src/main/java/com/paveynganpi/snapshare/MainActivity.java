@@ -215,7 +215,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setTheme(R.style.Theme_Snapshare);
         setContentView(R.layout.activity_main);
+
 
         //check if current user is still in session
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -262,7 +264,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             // this tab is selected.
             actionBar.addTab(
                     actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
+                            .setIcon(SectionsPagerAdapter.getIcon(i))
                             .setTabListener(this));
         }
     }

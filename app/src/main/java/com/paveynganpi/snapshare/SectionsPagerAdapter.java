@@ -59,4 +59,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
         return null;
     }
+
+    //returns the of an icon for the tabs
+    public static int getIcon(int position){
+
+        switch (position) {
+            case 0:
+                return R.drawable.ic_tab_inbox;
+            case 1:
+                return R.drawable.ic_tab_friends;
+
+        }
+        return R.drawable.ic_tab_inbox;
+
+    }
 }
