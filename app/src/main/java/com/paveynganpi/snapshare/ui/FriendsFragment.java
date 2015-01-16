@@ -17,6 +17,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.paveynganpi.snapshare.adapter.UserAdapter;
 import com.paveynganpi.snapshare.utils.ParseConstants;
 import com.paveynganpi.snapshare.R;
 
@@ -76,12 +77,7 @@ public class FriendsFragment extends Fragment {//does extend listfragment anymor
 
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                            getActivity(),//not anymore getListView() since we arent referencing the listView anymore
-                            android.R.layout.simple_list_item_1,
-                            usernames
-                    );
-
+                    UserAdapter adapter = new UserAdapter(getActivity(),mFriends);
                     //get reference to the list view
 
                     mGridView.setAdapter(adapter);
