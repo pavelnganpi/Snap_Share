@@ -77,10 +77,13 @@ public class FriendsFragment extends Fragment {//does extend listfragment anymor
 
                     }
 
-                    UserAdapter adapter = new UserAdapter(getActivity(),mFriends);
-                    //get reference to the list view
-
-                    mGridView.setAdapter(adapter);
+                    if(mGridView.getAdapter() == null) {
+                        UserAdapter adapter = new UserAdapter(getActivity(), mFriends);
+                        mGridView.setAdapter(adapter);
+                    }
+                    else{
+                        ((UserAdapter)mGridView.getAdapter()).refill(mFriends);
+                    }
 
                 }
                 else{
