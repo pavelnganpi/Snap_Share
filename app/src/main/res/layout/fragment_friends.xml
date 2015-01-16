@@ -5,10 +5,10 @@
                 tools:context=".MainActivity$PlaceholderFragment">
 
 
-    <ListView
+    <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@android:id/list"
+        android:id="@+id/friendsGrid"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 

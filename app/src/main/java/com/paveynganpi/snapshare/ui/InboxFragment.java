@@ -40,6 +40,10 @@ public class InboxFragment extends ListFragment {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.SwipeRefresh1,
+                R.color.SwipeRefresh2,
+                R.color.SwipeRefresh3,
+                R.color.SwipeRefresh4);
 
         return rootView;
     }
@@ -104,6 +108,12 @@ public class InboxFragment extends ListFragment {
     public void onResume() {
         super.onResume();
 
+        retrieveMessages();
+
+
+    }
+
+    private void retrieveMessages() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_MESSAGES);
         query.whereEqualTo(ParseConstants.KEY_RECIPIENT_IDS, ParseUser.getCurrentUser().getObjectId());
         query.addDescendingOrder(ParseConstants.KEY_CREATED_AT);
@@ -111,6 +121,10 @@ public class InboxFragment extends ListFragment {
             @Override
             public void done(List<ParseObject> messages, ParseException e) {
 
+                //if the user is refreshing the listview, set it to false
+                if(mSwipeRefreshLayout.isRefreshing()){
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if(e == null){
                     //success
                     mMessages = messages;
@@ -140,14 +154,12 @@ public class InboxFragment extends ListFragment {
 
             }
         });
-
-
     }
+
     protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            Toast.makeText(getActivity(),"We're refreshing",Toast.LENGTH_SHORT).show();//toast
-
+               retrieveMessages();
         }
     };
 

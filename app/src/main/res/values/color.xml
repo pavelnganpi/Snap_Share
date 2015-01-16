@@ -8,4 +8,8 @@
     <color name="focused_purple_button">#d6c3ed</color>
     <color name="text_color">#4B2A75</color>
     <color name="light_purple_background">#e9e4ed</color>
+    <color name="SwipeRefresh1">#482c6f</color>
+    <color name="SwipeRefresh2">#ad78d9</color>
+    <color name="SwipeRefresh3">#dcadf4</color>
+    <color name="SwipeRefresh4">#ad78f4</color>
 </resources>
