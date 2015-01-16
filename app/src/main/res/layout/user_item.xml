@@ -12,6 +12,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/avatar_empty"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/content_desc_user_avatar"/>
 
     <TextView
