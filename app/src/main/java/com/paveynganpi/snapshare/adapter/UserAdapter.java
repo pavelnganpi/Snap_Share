@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.utils.ParseConstants;
 
@@ -19,14 +20,14 @@ import java.util.List;
 /**
  * Created by paveynganpi on 1/5/15.
  */
-public class UserAdapter extends ArrayAdapter {
+public class UserAdapter extends ArrayAdapter<ParseUser> {
 
-    protected List<ParseObject> mMessages;
+    protected List<ParseUser> mUsers;
     protected Context mContext;
 
-    public UserAdapter(Context context, List<ParseObject> messages){
-        super(context, R.layout.message_item,messages); //call the super class
-        mMessages = messages;
+    public UserAdapter(Context context, List<ParseUser> users){
+        super(context, R.layout.message_item,users); //call the super class
+        mUsers = users;
         mContext = context;
 
     }
@@ -41,11 +42,10 @@ public class UserAdapter extends ArrayAdapter {
         into views in code that we can use
          */
         if(convertView == null) {//to avoid creating a converview all the time
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.message_item, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.user_item, null);
             holder = new ViewHolder();
-            holder.iconImageView = (ImageView) convertView.findViewById(R.id.messageIcon);
-            holder.nameLabel = (TextView) convertView.findViewById(R.id.senderLabel);
-            holder.timeLabel = (TextView)convertView.findViewById(R.id.timeLabel);
+           // holder.iconImageView = (ImageView) convertView.findViewById(R.id.messageIcon);
+            holder.nameLabel = (TextView) convertView.findViewById(R.id.nameLabel);
             convertView.setTag(holder);//makes our listview scroll
         }
         else{
@@ -56,40 +56,32 @@ public class UserAdapter extends ArrayAdapter {
 
         }
 
-        ParseObject message = mMessages.get(position);
+        ParseUser user = mUsers.get(position);
 
+//        if(user.getString(ParseConstants.KEY_FILE_TYPE).equals(ParseConstants.TYPE_IMAGE)) {
+//            holder.iconImageView.setImageResource(R.drawable.ic_picture);
+//        }
+//        else {
+//            holder.iconImageView.setImageResource(R.drawable.ic_video);
+//        }
 
-        Date createdAt = message.getCreatedAt();//get the date the message was created from parse backend
-        long now = new Date().getTime();//get current date
-        String convertedDate = DateUtils.getRelativeTimeSpanString(
-                createdAt.getTime(),now,DateUtils.SECOND_IN_MILLIS).toString();
-        holder.timeLabel.setText(convertedDate); //sets the converted date into the message_item.xml view
-
-
-        if(message.getString(ParseConstants.KEY_FILE_TYPE).equals(ParseConstants.TYPE_IMAGE)) {
-            holder.iconImageView.setImageResource(R.drawable.ic_picture);
-        }
-        else {
-            holder.iconImageView.setImageResource(R.drawable.ic_video);
-        }
-        holder.nameLabel.setText(message.getString(ParseConstants.KEY_SENDER_NAME));
+        holder.nameLabel.setText(user.getUsername());
 
         return convertView;
     }
 
     public static class ViewHolder{
 
-        ImageView iconImageView;
+        //ImageView iconImageView;
         TextView nameLabel;
-        TextView timeLabel;
 
     }
 
     //to refill the messageAdapter
-    public void refill(List<ParseObject> messages){
+    public void refill(List<ParseUser> users){
 
-        mMessages.clear();
-        mMessages.addAll(messages);
+        mUsers.clear();
+        mUsers.addAll(users);
         notifyDataSetChanged();
 
     }

@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by paveynganpi on 1/5/15.
  */
-public class MessageAdapter extends ArrayAdapter {
+public class MessageAdapter extends ArrayAdapter<ParseObject> {
 
     protected List<ParseObject> mMessages;
     protected Context mContext;
