@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * Created by paveynganpi on 12/31/14.
  */
-public class FriendsFragment extends Fragment {//does extend listfragment anymore since we are using a gridview now
+public class FriendsFragment extends Fragment implements AbsListView.OnScrollListener{//does extend listfragment anymore since we are using a gridview now
     private static final String TAG = FriendsFragment.class.getSimpleName();
     protected List<ParseUser> mFriends;
     //protected ListView mListView;
@@ -48,6 +49,8 @@ public class FriendsFragment extends Fragment {//does extend listfragment anymor
 
 
     }
+
+
 
     @Override
     public void onResume() {
@@ -85,6 +88,7 @@ public class FriendsFragment extends Fragment {//does extend listfragment anymor
                         ((UserAdapter)mGridView.getAdapter()).refill(mFriends);
                     }
 
+
                 }
                 else{
 
@@ -99,10 +103,28 @@ public class FriendsFragment extends Fragment {//does extend listfragment anymor
 
                 }
 
+
             }
         });
 
     }
 
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        if (scrollState == SCROLL_STATE_IDLE) {
+            if (view.getLastVisiblePosition() >= view.getCount() - 1 - 0) {
+                //++;
+                //load more list items:
+                ((UserAdapter)mGridView.getAdapter()).refill(mFriends);
+            }
+        }
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
 }
