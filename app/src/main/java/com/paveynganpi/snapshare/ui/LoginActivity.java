@@ -43,16 +43,16 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
 
             }
         });
 
         //initialize the instance variables with the respective data in the txt fields
-        mUsername = (EditText)findViewById(R.id.usernameField);
-        mPassword = (EditText)findViewById(R.id.passwordField);
-        mLoginButton = (Button)findViewById(R.id.loginButton);
+        mUsername = (EditText) findViewById(R.id.usernameField);
+        mPassword = (EditText) findViewById(R.id.passwordField);
+        mLoginButton = (Button) findViewById(R.id.loginButton);
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,53 +67,51 @@ public class LoginActivity extends ActionBarActivity {
                 password.trim();
 
                 //if user leaves any text fields blank
-                if(username.isEmpty() || password.isEmpty()){
+                if (username.isEmpty() || password.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                     builder.setMessage(R.string.login_error_message);//creates a dialog with this message
                     builder.setTitle(R.string.login_error_title);
-                    builder.setPositiveButton(android.R.string.ok,null);//creates a button to dismiss the dialog
+                    builder.setPositiveButton(android.R.string.ok, null);//creates a button to dismiss the dialog
 
                     AlertDialog dialog = builder.create();//create a dialog
                     dialog.show();//show the dialog
                 }
                 //the user put in good data, logging in
-                else{
+                else {
                     //login
-                  setProgressBarIndeterminateVisibility(true);//show the progress bar
+                    setProgressBarIndeterminateVisibility(true);//show the progress bar
 
-                   ParseUser.logInInBackground(username, password, new LogInCallback() {
-                       @Override
-                       public void done(ParseUser user, ParseException e) {
-                           setProgressBarIndeterminateVisibility(false);//remove progress bar after we have response from parse
-                           if(e == null){
-                               //success
+                    ParseUser.logInInBackground(username, password, new LogInCallback() {
+                        @Override
+                        public void done(ParseUser user, ParseException e) {
+                            setProgressBarIndeterminateVisibility(false);//remove progress bar after we have response from parse
+                            if (e == null) {
+                                //success
 
-                               Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                               startActivity(intent);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
 
-                           }
-                           else{
+                            } else {
 
-                               AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                               builder.setMessage(R.string.login_error_message);//creates a dialog with this message
-                               builder.setTitle(R.string.login_error_title);
-                               builder.setPositiveButton(android.R.string.ok,null);//creates a button to dismiss the dialog
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                builder.setMessage(R.string.login_error_message);//creates a dialog with this message
+                                builder.setTitle(R.string.login_error_title);
+                                builder.setPositiveButton(android.R.string.ok, null);//creates a button to dismiss the dialog
 
-                               AlertDialog dialog = builder.create();//create a dialog
-                               dialog.show();//show the dialog
+                                AlertDialog dialog = builder.create();//create a dialog
+                                dialog.show();//show the dialog
 
-                           }
+                            }
 
-                       }
-                   });
+                        }
+                    });
 
                 }
 
             }
         });
-
 
 
     }

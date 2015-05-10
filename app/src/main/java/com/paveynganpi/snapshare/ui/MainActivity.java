@@ -45,7 +45,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public static final int MEDIA_TYPE_IMAGE = 4;
     public static final int MEDIA_TYPE_VIDEO = 5;
 
-    public static final int FILE_SIZE_LIMIT = 1024*1024*10;//10MB
+    public static final int FILE_SIZE_LIMIT = 1024 * 1024 * 10;//10MB
 
     protected Uri mMediaUri;
 
@@ -54,19 +54,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         @Override
         public void onClick(DialogInterface dialog, int which) {
 
-            switch (which){
+            switch (which) {
 
                 case 0://take a pic
 
                     Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     mMediaUri = getOutPutMediaFileUri(MEDIA_TYPE_IMAGE);
-                    if(mMediaUri == null){
+                    if (mMediaUri == null) {
 
                         //error
-                        Toast.makeText(MainActivity.this, R.string.error_external_storage,Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, R.string.error_external_storage, Toast.LENGTH_LONG).show();
 
-                    }
-                    else {
+                    } else {
                         takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
 
                         startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
@@ -76,16 +75,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 case 1://take vid
                     Intent takeVideoIntent = new Intent((MediaStore.ACTION_VIDEO_CAPTURE));
                     mMediaUri = getOutPutMediaFileUri(MEDIA_TYPE_VIDEO);
-                    if(mMediaUri == null){
+                    if (mMediaUri == null) {
 
                         //error
-                        Toast.makeText(MainActivity.this,R.string.error_external_storage,Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, R.string.error_external_storage, Toast.LENGTH_LONG).show();
 
-                    }
-                    else {
+                    } else {
                         takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
-                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,3);//max length of video
-                        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);//low video quality
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 3);//max length of video
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);//low video quality
                         startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
                     }
                     break;
@@ -93,13 +91,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 case 2://choose pic
                     Intent choosePhotoIntent = new Intent(Intent.ACTION_GET_CONTENT);
                     choosePhotoIntent.setType("image/*");
-                    startActivityForResult(choosePhotoIntent,PICK_PHOTO_REQUEST);
+                    startActivityForResult(choosePhotoIntent, PICK_PHOTO_REQUEST);
                     break;
 
                 case 3://choose vid
                     Intent chooseVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
                     chooseVideoIntent.setType("video/*");
-                    Toast.makeText(MainActivity.this,getString(R.string.video_file_size_warning),Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.video_file_size_warning), Toast.LENGTH_LONG).show();
                     startActivityForResult(chooseVideoIntent, PICK_VIDEO_REQUEST);
                     break;
 
@@ -113,7 +111,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             // using Environment.getExternalStorageState() before doing this.
 
 
-            if(isExternalStoriageAvailable()){
+            if (isExternalStoriageAvailable()) {
                 //get the URI
 
                 //1. get the external storage
@@ -122,10 +120,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                         appName);
 
                 //create subdirectory
-                if(!mediaStorageDir.exists()){
-                    if(!mediaStorageDir.mkdirs()){
+                if (!mediaStorageDir.exists()) {
+                    if (!mediaStorageDir.mkdirs()) {
 
-                        Log.e(TAG,"Failed to create a directory");
+                        Log.e(TAG, "Failed to create a directory");
                         return null;
                     }
 
@@ -140,22 +138,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 //to a string as a to name our media file
 
                 //now get the paths
-                String path  = mediaStorageDir.getPath() + File.separator;
+                String path = mediaStorageDir.getPath() + File.separator;
 
                 //now depending on media type, give the right extensions
-                if(mediaType == MEDIA_TYPE_IMAGE){
-                    mediaFile = new File(path + "IMG_"+ timestamp + ".jpg");
+                if (mediaType == MEDIA_TYPE_IMAGE) {
+                    mediaFile = new File(path + "IMG_" + timestamp + ".jpg");
                     //Log.d(TAG,"this is a picture");
 
-                }
-                else if(mediaType == MEDIA_TYPE_VIDEO){
+                } else if (mediaType == MEDIA_TYPE_VIDEO) {
 
                     mediaFile = new File(path + "VID_" + timestamp + ".mp4");
                     //Log.d(TAG,"this is a video");
 
 
-                }
-                else{
+                } else {
                     return null;
                 }
                 //Log.d(TAG, "FILE "+Uri.fromFile(mediaFile));
@@ -163,22 +159,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 //return the file's uri
 
                 return Uri.fromFile(mediaFile);
-            }
-            else {
+            } else {
 
                 return null;
             }
         }
 
         //checks if there is an external storage
-        private  boolean isExternalStoriageAvailable(){
+        private boolean isExternalStoriageAvailable() {
 
             String state = Environment.getExternalStorageState();
 
-            if(state.equals(Environment.MEDIA_MOUNTED)){
+            if (state.equals(Environment.MEDIA_MOUNTED)) {
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
 
@@ -214,7 +208,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         ParseUser currentUser = ParseUser.getCurrentUser();
 
         //if current user is not in session, then take the user to the loginActivity
-        if(currentUser == null) {
+        if (currentUser == null) {
             navigateToLogin();
 
         }
@@ -230,8 +224,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(this,getSupportFragmentManager());//added this as the first parameter
-                                       //because we added a new parameter of type Context in the SectionsPagerAdapter
+        mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());//added this as the first parameter
+        //because we added a new parameter of type Context in the SectionsPagerAdapter
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -264,7 +258,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             //success
             //for case of choose a picture, it return a Uri, so we store it
             if (requestCode == PICK_PHOTO_REQUEST || requestCode == PICK_VIDEO_REQUEST) {
@@ -275,24 +269,21 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     mMediaUri = data.getData();
                 }
 
-                if(requestCode == PICK_VIDEO_REQUEST){
+                if (requestCode == PICK_VIDEO_REQUEST) {
                     //make sure the file is less than 10MB
                     int fileSize = 0;
                     InputStream inputStream = null;
                     try {
                         inputStream = getContentResolver().openInputStream(mMediaUri);//get the bytes
                         fileSize = inputStream.available();//gets the size
-                    }
-                    catch(FileNotFoundException e){
+                    } catch (FileNotFoundException e) {
                         Toast.makeText(this, getString(R.string.error_opening_file), Toast.LENGTH_LONG);
                         return;
-                    }
-                    catch(IOException e){
+                    } catch (IOException e) {
                         Toast.makeText(this, getString(R.string.error_opening_file), Toast.LENGTH_LONG);
                         return;
 
-                    }
-                    finally {
+                    } finally {
                         //always gets executed. always close the inputstream
                         try {
                             inputStream.close();
@@ -302,16 +293,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
                     }
 
-                    if(FILE_SIZE_LIMIT <=fileSize){
+                    if (FILE_SIZE_LIMIT <= fileSize) {
                         Toast.makeText(this, getString(R.string.error_file_size_too_large), Toast.LENGTH_LONG);
-                            return; //avoid going down
+                        return; //avoid going down
                     }
 
 
                 }
 
-            }
-            else {
+            } else {
                 //save to galery
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 mediaScanIntent.setData(mMediaUri);
@@ -324,21 +314,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             Intent recipientIntent = new Intent(this, RecipientsActivity.class);
             //type of the file, .jpg or .mp4
             String fileType;
-            if(requestCode == TAKE_PHOTO_REQUEST || requestCode == PICK_PHOTO_REQUEST){
+            if (requestCode == TAKE_PHOTO_REQUEST || requestCode == PICK_PHOTO_REQUEST) {
                 fileType = ParseConstants.TYPE_IMAGE;
-            }
-            else{
+            } else {
                 fileType = ParseConstants.TYPE_VIDEO;
             }
 
             recipientIntent.setData(mMediaUri);
-            recipientIntent.putExtra(ParseConstants.KEY_FILE_TYPE,fileType);
+            recipientIntent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
             startActivity(recipientIntent);
-           // Log.d(TAG,"good job");
+            // Log.d(TAG,"good job");
 
-        }
-        else if(resultCode !=RESULT_CANCELED){
-            Toast.makeText(MainActivity.this,R.string.general_error,Toast.LENGTH_LONG).show();
+        } else if (resultCode != RESULT_CANCELED) {
+            Toast.makeText(MainActivity.this, R.string.general_error, Toast.LENGTH_LONG).show();
 
         }
 
@@ -385,7 +373,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             case R.id.action_camera:
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setItems(R.array.camera_choices,mDialogListener);
+                builder.setItems(R.array.camera_choices, mDialogListener);
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 break;

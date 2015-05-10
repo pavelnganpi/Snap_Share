@@ -35,12 +35,12 @@ public class SignUpActivity extends ActionBarActivity {
         actionBar.hide();
 
         //initialize the instance variables with the respect data in the txt fields
-        mUsername = (EditText)findViewById(R.id.usernameField);
-        mPassword = (EditText)findViewById(R.id.passwordField);
-        mEmail = (EditText)findViewById(R.id.emailField);
-        mSignUpButton = (Button)findViewById(R.id.signUpButton);
+        mUsername = (EditText) findViewById(R.id.usernameField);
+        mPassword = (EditText) findViewById(R.id.passwordField);
+        mEmail = (EditText) findViewById(R.id.emailField);
+        mSignUpButton = (Button) findViewById(R.id.signUpButton);
 
-        mCancelButton = (Button)findViewById(R.id.cancelButton);
+        mCancelButton = (Button) findViewById(R.id.cancelButton);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,17 +63,17 @@ public class SignUpActivity extends ActionBarActivity {
                 email.trim();
 
                 //if user lives any text fields blanck
-                if(username.isEmpty() || password.isEmpty() || email.isEmpty()){
+                if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
                     builder.setMessage(R.string.signup_error_message);//creates a dialog with this message
                     builder.setTitle(R.string.signup_error_title);
-                    builder.setPositiveButton(android.R.string.ok,null);//creates a button to dismiss the dialog
+                    builder.setPositiveButton(android.R.string.ok, null);//creates a button to dismiss the dialog
 
                     AlertDialog dialog = builder.create();//create a dialog
                     dialog.show();//show the dialog
                 }
                 //the user put in good data, create a user
-                else{
+                else {
                     setSupportProgressBarIndeterminate(true);//starts spinner
                     ParseUser newUser = new ParseUser();
                     newUser.setUsername(username);
@@ -89,21 +89,21 @@ public class SignUpActivity extends ActionBarActivity {
 
                             setSupportProgressBarIndeterminate(false);//spinner after response from parse
                             //success
-                            if( e == null){
+                            if (e == null) {
 
-                                Intent intent = new Intent(SignUpActivity.this,MainActivity.class);
+                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
 
                             }
                             //there was an error from the parse server
-                            else{
+                            else {
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
                                 builder.setMessage(e.getMessage());//creates a dialog with this message
                                 builder.setTitle(R.string.signup_error_title);
-                                builder.setPositiveButton(android.R.string.ok,null);//creates a button to dismiss the dialog
+                                builder.setPositiveButton(android.R.string.ok, null);//creates a button to dismiss the dialog
 
                                 AlertDialog dialog = builder.create();//create a dialog
                                 dialog.show();//show the dialog

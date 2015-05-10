@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -17,61 +20,36 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.paveynganpi.snapshare.adapter.UserAdapter;
 import com.paveynganpi.snapshare.utils.ParseConstants;
 import com.paveynganpi.snapshare.R;
 
 import java.util.List;
 
 
-public class EditFriendsActivity extends ActionBarActivity  {
+public class EditFriendsActivity extends ActionBarActivity {
 
     private static final String TAG = EditFriendsActivity.class.getSimpleName();
     protected List<ParseUser> mUsers;
     protected ListView mListView;
     protected ParseRelation<ParseUser> mFriendsRelation;
     protected ParseUser mCurrentUser;
+    protected GridView mGridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.activity_edit_friends);
-       // myList=(ListView)findViewById(android.R.id.list);//instantiate mylist
+        setContentView(R.layout.user_grid);
+        // myList=(ListView)findViewById(android.R.id.list);//instantiate mylist
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getListView().setChoiceMode(mListView.CHOICE_MODE_MULTIPLE);
+        mGridView = (GridView) findViewById(R.id.friendsGrid);
+        mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
+        mGridView.setOnItemClickListener(mOnItemClickListener);
 
-        //whenever an item in the friends list is selected
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if(getListView().isItemChecked(position)) {
-                    //add friends
-                    mFriendsRelation.add(mUsers.get(position));//add the friend at that position
-
-                }
-                else{
-                    //remove friends
-                    mFriendsRelation.remove(mUsers.get(position));
-
-                }
-                mCurrentUser.saveInBackground(new SaveCallback() {//save in parse
-                    @Override
-                    public void done(ParseException e) {
-
-                        if (e != null) {
-
-                            Log.e(TAG, e.getMessage());
-
-                        }
-
-                    }
-                });
-
-            }
-        });
+        TextView emptyTextView = (TextView) findViewById(android.R.id.empty);
+        mGridView.setEmptyView(emptyTextView);
 
     }
 
@@ -85,8 +63,6 @@ public class EditFriendsActivity extends ActionBarActivity  {
         mCurrentUser = ParseUser.getCurrentUser();
         mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
         setSupportProgressBarIndeterminateVisibility(true);
-
-
 
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -109,15 +85,12 @@ public class EditFriendsActivity extends ActionBarActivity  {
 
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                            EditFriendsActivity.this,
-                            android.R.layout.simple_list_item_checked,
-                            usernames
-                    );
-
-                    //get reference to the list view
-
-                    getListView().setAdapter(adapter);
+                    if (mGridView.getAdapter() == null) {
+                        UserAdapter adapter = new UserAdapter(EditFriendsActivity.this, mUsers);
+                        mGridView.setAdapter(adapter);
+                    } else {
+                        ((UserAdapter) mGridView.getAdapter()).refill(mUsers);
+                    }
                     addFriendsCheckMark();//makes sure that the user's friends are checked even when we come back
                     //setListAdapter(adapter);
 
@@ -164,14 +137,13 @@ public class EditFriendsActivity extends ActionBarActivity  {
     }
 
 
-
-    private void addFriendsCheckMark(){
+    private void addFriendsCheckMark() {
 
         mFriendsRelation.getQuery().findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> friends, ParseException e) {
 
-                if(e == null) {
+                if (e == null) {
                     //success
                     for (int i = 0; i < mUsers.size(); i++) {
 
@@ -181,21 +153,51 @@ public class EditFriendsActivity extends ActionBarActivity  {
 
                             if (user.getObjectId().equals(friend.getObjectId())) {
 
-                                getListView().setItemChecked(i, true);
+                                mGridView.setItemChecked(i, true);
 
                             }
 
                         }
 
                     }
-                }
-                else{
-                    Log.e(TAG,e.getMessage());
+                } else {
+                    Log.e(TAG, e.getMessage());
                 }
 
             }
         });
 
     }
+
+    protected AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            ImageView checkImageView = (ImageView) view.findViewById(R.id.checkImageView);
+            if (mGridView.isItemChecked(position)) {
+                //add friends
+                mFriendsRelation.add(mUsers.get(position));//add the friend at that position
+                checkImageView.setVisibility(View.VISIBLE);
+
+            } else {
+                //remove friends
+                mFriendsRelation.remove(mUsers.get(position));
+                checkImageView.setVisibility(View.INVISIBLE);
+
+            }
+            mCurrentUser.saveInBackground(new SaveCallback() {//save in parse
+                @Override
+                public void done(ParseException e) {
+
+                    if (e != null) {
+
+                        Log.e(TAG, e.getMessage());
+
+                    }
+
+                }
+            });
+        }
+    };
 
 }

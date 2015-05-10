@@ -38,7 +38,7 @@ public class InboxFragment extends ListFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_inbox, container, false);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.SwipeRefresh1,
                 R.color.SwipeRefresh2,
@@ -62,17 +62,16 @@ public class InboxFragment extends ListFragment {
                 ParseFile file = message.getParseFile(ParseConstants.KEY_FILE);//gets file from parse
                 Uri fileUri = Uri.parse(file.getUrl());//convert url to uri
 
-                if(messageType.equals(ParseConstants.TYPE_IMAGE)){
+                if (messageType.equals(ParseConstants.TYPE_IMAGE)) {
                     //view image
 
-                    Intent intent = new Intent(getActivity(),ViewImageActivity.class);
+                    Intent intent = new Intent(getActivity(), ViewImageActivity.class);
                     intent.setData(fileUri);
                     startActivity(intent);
 
-                }
-                else{
+                } else {
                     //view video
-                    Intent intent = new Intent(Intent.ACTION_VIEW,fileUri);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, fileUri);
                     intent.setDataAndType(fileUri, "video/*");
                     startActivity(intent);
 
@@ -80,19 +79,18 @@ public class InboxFragment extends ListFragment {
                 }
                 //delete
                 List<String> ids = message.getList(ParseConstants.KEY_RECIPIENT_IDS);
-                if(ids.size() == 1){
+                if (ids.size() == 1) {
                     message.deleteInBackground();
 
 
-                }
-                else{
+                } else {
                     //remove the recipient and save
                     ids.remove(ParseUser.getCurrentUser().getObjectId());
 
                     ArrayList<String> idsToRemove = new ArrayList<String>();
                     idsToRemove.add(ParseUser.getCurrentUser().getObjectId());
 
-                    message.removeAll(ParseConstants.KEY_RECIPIENT_IDS,idsToRemove);
+                    message.removeAll(ParseConstants.KEY_RECIPIENT_IDS, idsToRemove);
                     message.saveInBackground();
 
 
@@ -122,10 +120,10 @@ public class InboxFragment extends ListFragment {
             public void done(List<ParseObject> messages, ParseException e) {
 
                 //if the user is refreshing the listview, set it to false
-                if(mSwipeRefreshLayout.isRefreshing()){
+                if (mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
-                if(e == null){
+                if (e == null) {
                     //success
                     mMessages = messages;
 
@@ -138,15 +136,14 @@ public class InboxFragment extends ListFragment {
 
                     }
                     //if messageAdapter does not exist, then create it
-                    if(getListView().getAdapter() == null) {
+                    if (getListView().getAdapter() == null) {
                         MessageAdapter adapter = new MessageAdapter(getListView().getContext(), mMessages);
                         setListAdapter(adapter);
 
-                    }
-                    else{
+                    } else {
                         //if it exists, no need to recreate it,
                         //just set the data on the listview
-                        ((MessageAdapter)getListView().getAdapter()).refill(mMessages);
+                        ((MessageAdapter) getListView().getAdapter()).refill(mMessages);
                     }
 
                 }
@@ -159,10 +156,9 @@ public class InboxFragment extends ListFragment {
     protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-               retrieveMessages();
+            retrieveMessages();
         }
     };
-
 
 
 }
