@@ -3,13 +3,11 @@ package com.paveynganpi.snapshare.ui;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -27,7 +25,7 @@ import java.util.List;
 /**
  * Created by paveynganpi on 12/31/14.
  */
-public class FriendsFragment extends Fragment implements AbsListView.OnScrollListener{//does extend listfragment anymore since we are using a gridview now
+public class FriendsFragment extends Fragment implements AbsListView.OnScrollListener {//does extend listfragment anymore since we are using a gridview now
     private static final String TAG = FriendsFragment.class.getSimpleName();
     protected List<ParseUser> mFriends;
     //protected ListView mListView;
@@ -37,19 +35,18 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
+        View rootView = inflater.inflate(R.layout.user_grid, container, false);
 
-        mGridView = (GridView)rootView.findViewById(R.id.friendsGrid);
+        mGridView = (GridView) rootView.findViewById(R.id.friendsGrid);
 
         //since we using gridview now instead of listview, we have to set our own emptyview
-        TextView emptyTextView = (TextView)rootView.findViewById(android.R.id.empty);
+        TextView emptyTextView = (TextView) rootView.findViewById(android.R.id.empty);
         mGridView.setEmptyView(emptyTextView);
 
         return rootView;
 
 
     }
-
 
 
     @Override
@@ -67,7 +64,7 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
             @Override
             public void done(List<ParseUser> friends, ParseException e) {
                 getActivity().setProgressBarIndeterminate(false);
-                if(e == null){
+                if (e == null) {
 
                     mFriends = friends;
 
@@ -77,20 +74,19 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
 
                         usernames[i] = user.getUsername();
                         i++;
+                        Log.d("FRIENDS", user.getUsername());
 
                     }
 
-                    if(mGridView.getAdapter() == null) {
+                    if (mGridView.getAdapter() == null) {
                         UserAdapter adapter = new UserAdapter(getActivity(), mFriends);
                         mGridView.setAdapter(adapter);
-                    }
-                    else{
-                        ((UserAdapter)mGridView.getAdapter()).refill(mFriends);
+                    } else {
+                        ((UserAdapter) mGridView.getAdapter()).refill(mFriends);
                     }
 
 
-                }
-                else{
+                } else {
 
                     Log.e(TAG, e.getMessage().toString());
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -117,7 +113,7 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
             if (view.getLastVisiblePosition() >= view.getCount() - 1 - 0) {
                 //++;
                 //load more list items:
-                ((UserAdapter)mGridView.getAdapter()).refill(mFriends);
+                ((UserAdapter) mGridView.getAdapter()).refill(mFriends);
             }
         }
 

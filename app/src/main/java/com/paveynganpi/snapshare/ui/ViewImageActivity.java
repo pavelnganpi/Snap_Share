@@ -25,7 +25,7 @@ public class ViewImageActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_image);
 
-        ImageView imageView = (ImageView)findViewById(R.id.imageView);
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
         Uri imageUri = getIntent().getData();
 
         Picasso.with(this).load(imageUri.toString()).into(imageView);
@@ -35,7 +35,7 @@ public class ViewImageActivity extends ActionBarActivity {
             public void run() {
                 finish();
             }
-        },10*1000);
+        }, 10 * 1000);
 
     }
 

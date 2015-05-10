@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ public class UserAdapter extends ArrayAdapter<ParseUser> {
             holder = new ViewHolder();
             holder.userImageView = (ImageView) convertView.findViewById(R.id.userImageView);
             holder.nameLabel = (TextView) convertView.findViewById(R.id.nameLabel);
+            holder.checkImageView = (ImageView) convertView.findViewById(R.id.checkImageView);
             convertView.setTag(holder);//makes our listview scroll
         }
         else{
@@ -71,14 +73,17 @@ public class UserAdapter extends ArrayAdapter<ParseUser> {
                     .into(holder.userImageView);
         }
 
-        //if(user.getString(ParseConstants.KEY_FILE_TYPE).equals(ParseConstants.TYPE_IMAGE)) {
-            //holder.userImageView.setImageResource(R.drawable.ic_picture);
-       // }
-      //  else {
-            //holder.userImageView.setImageResource(R.drawable.ic_video);
-       // }
-
         holder.nameLabel.setText(user.getUsername());
+
+        //checks if the item at position is checked or not
+        //references the view from the parent
+        GridView gridView = (GridView)parent;
+        if(gridView.isItemChecked(position)){
+            holder.checkImageView.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.checkImageView.setVisibility(View.INVISIBLE);
+        }
 
         return convertView;
     }
@@ -86,6 +91,7 @@ public class UserAdapter extends ArrayAdapter<ParseUser> {
     public static class ViewHolder{
 
         ImageView userImageView;
+        ImageView checkImageView;
         TextView nameLabel;
 
     }
