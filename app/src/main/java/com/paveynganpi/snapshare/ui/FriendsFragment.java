@@ -44,10 +44,7 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
         mGridView.setEmptyView(emptyTextView);
 
         return rootView;
-
-
     }
-
 
     @Override
     public void onResume() {
@@ -74,8 +71,6 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
 
                         usernames[i] = user.getUsername();
                         i++;
-                        Log.d("FRIENDS", user.getUsername());
-
                     }
 
                     if (mGridView.getAdapter() == null) {
@@ -99,12 +94,10 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
 
                 }
 
-
             }
         });
 
     }
-
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
