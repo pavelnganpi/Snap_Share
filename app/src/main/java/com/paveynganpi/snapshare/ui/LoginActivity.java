@@ -16,6 +16,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.paveynganpi.snapshare.R;
+import com.paveynganpi.snapshare.SnapShareApplication;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -87,6 +88,8 @@ public class LoginActivity extends ActionBarActivity {
                             setProgressBarIndeterminateVisibility(false);//remove progress bar after we have response from parse
                             if (e == null) {
                                 //success
+
+                                SnapShareApplication.updateParseInstallation(user);
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

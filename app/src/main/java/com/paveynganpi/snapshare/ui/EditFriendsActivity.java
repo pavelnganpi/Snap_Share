@@ -1,14 +1,13 @@
 package com.paveynganpi.snapshare.ui;
 
 import android.app.AlertDialog;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -20,9 +19,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.adapter.UserAdapter;
 import com.paveynganpi.snapshare.utils.ParseConstants;
-import com.paveynganpi.snapshare.R;
 
 import java.util.List;
 
