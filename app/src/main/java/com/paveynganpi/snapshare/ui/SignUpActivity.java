@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.paveynganpi.snapshare.R;
+import com.paveynganpi.snapshare.SnapShareApplication;
 
 
 public class SignUpActivity extends ActionBarActivity {
@@ -91,6 +92,9 @@ public class SignUpActivity extends ActionBarActivity {
                             //success
                             if (e == null) {
 
+                                SnapShareApplication.updateParseInstallation(
+                                        ParseUser.getCurrentUser());
+
                                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -109,18 +113,12 @@ public class SignUpActivity extends ActionBarActivity {
                                 dialog.show();//show the dialog
 
                             }
-
-
                         }
                     });
 
-
                 }
-
             }
         });
-
-
     }
 
 

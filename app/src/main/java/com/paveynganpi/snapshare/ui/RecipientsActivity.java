@@ -2,33 +2,33 @@ package com.paveynganpi.snapshare.ui;
 
 import android.app.AlertDialog;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.adapter.UserAdapter;
 import com.paveynganpi.snapshare.utils.FileHelper;
 import com.paveynganpi.snapshare.utils.ParseConstants;
-import com.paveynganpi.snapshare.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,6 @@ public class RecipientsActivity extends ActionBarActivity {
 
     private static final String TAG = RecipientsActivity.class.getSimpleName();
     protected List<ParseUser> mFriends;
-    protected ListView mListView;
     protected ParseRelation<ParseUser> mFriendsRelation;
     protected ParseUser mCurrentUser;
     protected MenuItem mSendMenuItem;
@@ -166,7 +165,7 @@ public class RecipientsActivity extends ActionBarActivity {
         ParseObject message = new ParseObject(ParseConstants.CLASS_MESSAGES);
         message.put(ParseConstants.KEY_SENDER_ID, ParseUser.getCurrentUser().getObjectId());
         message.put(ParseConstants.KEY_SENDER_NAME, ParseUser.getCurrentUser().getUsername());
-        message.put(ParseConstants.KEY_RECIPIENT_IDS, getRecipientId());
+        message.put(ParseConstants.KEY_RECIPIENT_IDS, getRecipientIds());
         message.put(ParseConstants.KEY_FILE_TYPE, mFileType);
 
         byte[] fileBytes = FileHelper.getByteArrayFromFile(this, mMedialUri);
@@ -187,7 +186,7 @@ public class RecipientsActivity extends ActionBarActivity {
 
     }
 
-    protected ArrayList<String> getRecipientId() {
+    protected ArrayList<String> getRecipientIds() {
 
         ArrayList<String> recipientIds = new ArrayList<String>();
 
@@ -202,6 +201,7 @@ public class RecipientsActivity extends ActionBarActivity {
 
     }
 
+    //send message and push notification
     protected void send(ParseObject message) {
 
         message.saveInBackground(new SaveCallback() {
@@ -211,6 +211,7 @@ public class RecipientsActivity extends ActionBarActivity {
                 if (e == null) {
                     //success
                     Toast.makeText(RecipientsActivity.this, getString(R.string.success_message), Toast.LENGTH_LONG).show();
+                    sendPushNotifications();
 
                 } else {
 
@@ -224,6 +225,17 @@ public class RecipientsActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    protected void sendPushNotifications() {
+        ParseQuery<ParseInstallation> query = ParseInstallation.getQuery();
+        query.whereContainedIn(ParseConstants.KEY_USER_ID, getRecipientIds());
+
+        //send push notification
+        ParsePush push = new ParsePush();
+        push.setQuery(query);
+        push.setMessage(getString(R.string.push_message,ParseUser.getCurrentUser().getUsername()));
+        push.sendInBackground();
     }
 
     protected AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
