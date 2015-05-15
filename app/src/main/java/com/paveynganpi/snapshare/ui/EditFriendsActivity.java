@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -23,6 +25,7 @@ import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.adapter.UserAdapter;
 import com.paveynganpi.snapshare.utils.ParseConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -177,6 +180,7 @@ public class EditFriendsActivity extends ActionBarActivity {
                 //add friends
                 mFriendsRelation.add(mUsers.get(position));//add the friend at that position
                 checkImageView.setVisibility(View.VISIBLE);
+                sendFolloweePushNotifications(position);
 
             } else {
                 //remove friends
@@ -199,4 +203,18 @@ public class EditFriendsActivity extends ActionBarActivity {
         }
     };
 
+    //send push notifications to those you clicked to follow
+    private void sendFolloweePushNotifications(int position) {
+        ArrayList<String> followeeObjectId = new ArrayList<>();
+        ParseUser followee = mUsers.get(position);
+        followeeObjectId.add(followee.getObjectId());
+
+        ParseQuery<ParseInstallation> query = ParseInstallation.getQuery();
+        query.whereContainedIn(ParseConstants.KEY_USER_ID, followeeObjectId);
+
+        ParsePush push = new ParsePush();
+        push.setQuery(query);
+        push.setMessage(getString(R.string.follower_push_message, ParseUser.getCurrentUser().getUsername()));
+        push.sendInBackground();
+    }
 }

@@ -54,5 +54,6 @@
     <string name="content_desc_user_avatar">user avatar</string>
     <string name="content_desc_user_checkMark">user checkmark</string>
     <string name="push_message">You have a new SnapShare message from %s!</string>
+    <string name="follower_push_message">%s just followed you!</string>
 
 </resources>
