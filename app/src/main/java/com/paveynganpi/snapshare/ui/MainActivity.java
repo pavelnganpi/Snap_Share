@@ -18,6 +18,9 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseCrashReporting;
 import com.parse.ParseUser;
 import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.adapter.SectionsPagerAdapter;
@@ -203,6 +206,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         setTheme(R.style.Theme_Snapshare);
         setContentView(R.layout.activity_main);
 
+        //parse analytics
+        ParseAnalytics.trackAppOpened(getIntent());
+
+        //crash reporting
+//        ParseCrashReporting.enable(this);
+//        Parse.initialize(this, "LzRx4mxemNXRqfz8gdcdhaKy4xFJmAfRIISIYexa", "gzDVpVNlGUgR8SnHUDiNEOrQtDIFGv2cvFTkBpio");
 
         //check if current user is still in session
         ParseUser currentUser = ParseUser.getCurrentUser();

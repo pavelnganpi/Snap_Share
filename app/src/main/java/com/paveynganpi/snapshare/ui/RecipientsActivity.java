@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseInstallation;
@@ -31,7 +32,9 @@ import com.paveynganpi.snapshare.utils.FileHelper;
 import com.paveynganpi.snapshare.utils.ParseConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class RecipientsActivity extends ActionBarActivity {
@@ -111,6 +114,11 @@ public class RecipientsActivity extends ActionBarActivity {
 
                     AlertDialog dialog = builder.create();//create a dialog
                     dialog.show();//show the dialog
+
+                    //track error in parse analytics
+                    Map<String, String> dimensions = new HashMap<>();
+                    dimensions.put("code", Integer.toString(e.getCode()));
+                    ParseAnalytics.trackEvent("error", dimensions);
 
                 }
 
@@ -221,6 +229,11 @@ public class RecipientsActivity extends ActionBarActivity {
                             .setPositiveButton(android.R.string.ok, null);
                     AlertDialog dialog = builder.create();
                     dialog.show();
+
+                    //track error in parse analytics
+                    Map<String, String> dimensions = new HashMap<>();
+                    dimensions.put("code", Integer.toString(e.getCode()));
+                    ParseAnalytics.trackEvent("error", dimensions);
                 }
             }
         });
