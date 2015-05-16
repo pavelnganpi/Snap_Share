@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.parse'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -20,6 +20,7 @@ android {
 }
 
 dependencies {
+    compile fileTree(dir: 'libs', include: 'ParseCrashReporting-*.jar')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile fileTree('src/main/libs')
@@ -27,4 +28,22 @@ dependencies {
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile files('libs/commons-io-2.4.jar')
     compile files('libs/picasso-2.4.0.jar')
+}
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://maven.parse.com/repo'
+        }
+    }
+    dependencies {
+        classpath 'com.parse.tools:gradle:1.+'
+    }
+}
+
+parse {
+    applicationId "LzRx4mxemNXRqfz8gdcdhaKy4xFJmAfRIISIYexa"
+    masterKey "TzcQ03BtFIVxaCP4zv2k72ldLlKKbHSgABXWpQYh"
+    // This makes it automatic. Otherwise you would have to run e.g. gradlew parseUploadSymbolsRelease.
+    uploadSymbols true
 }
