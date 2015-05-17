@@ -59,20 +59,7 @@ public class UserAdapter extends ArrayAdapter<ParseUser> {
         }
 
         ParseUser user = mUsers.get(position);
-        String email = user.getEmail().toLowerCase();
-
-        if(email.equals("")){
-            holder.userImageView.setImageResource(R.drawable.avatar_empty);
-        }
-        else{
-            String hash = MD5Util.md5Hex(email);
-            String gravatarUrl = "http://www.gravatar.com/avatar/"+hash + "?s=240&d=404";
-            Picasso.with(mContext)
-                    .load(gravatarUrl)
-                    .placeholder(R.drawable.avatar_empty)
-                    .into(holder.userImageView);
-        }
-
+        holder.userImageView.setImageResource(R.drawable.avatar_empty);
         holder.nameLabel.setText(user.getUsername());
 
         //checks if the item at position is checked or not

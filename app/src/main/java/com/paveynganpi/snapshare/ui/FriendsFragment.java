@@ -22,6 +22,9 @@ import com.paveynganpi.snapshare.utils.ParseConstants;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by paveynganpi on 12/31/14.
  */
@@ -31,7 +34,8 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
     //protected ListView mListView;
     protected ParseRelation<ParseUser> mFriendsRelation;
     protected ParseUser mCurrentUser;
-    protected GridView mGridView;
+    protected @InjectView(R.id.friendsGrid) GridView mGridView;
+    protected @InjectView(android.R.id.empty) TextView emptyTextView;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,9 +44,10 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
         mGridView = (GridView) rootView.findViewById(R.id.friendsGrid);
 
         //since we using gridview now instead of listview, we have to set our own emptyview
-        TextView emptyTextView = (TextView) rootView.findViewById(android.R.id.empty);
+        emptyTextView = (TextView) rootView.findViewById(android.R.id.empty);
         mGridView.setEmptyView(emptyTextView);
 
+        ButterKnife.inject(this, rootView);
         return rootView;
     }
 
@@ -115,5 +120,11 @@ public class FriendsFragment extends Fragment implements AbsListView.OnScrollLis
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 }
