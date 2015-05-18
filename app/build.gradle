@@ -18,6 +18,13 @@ android {
         }
     }
 }
+android {
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+}
+
 
 buildscript {
     repositories {
@@ -43,6 +50,11 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.0.1'
     compile files('libs/Parse-1.9.1.jar')
     compile files('libs/ParseFacebookUtilsV4-1.9.1.jar')
+    compile (
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.1'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.4.1'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.1']
+    )
 }
 
 parse {

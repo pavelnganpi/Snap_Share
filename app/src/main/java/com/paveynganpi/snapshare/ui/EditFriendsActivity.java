@@ -69,7 +69,8 @@ public class EditFriendsActivity extends ActionBarActivity {
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.orderByAscending(ParseConstants.KEY_USERNAME);
-        query.setLimit(1000);
+        query.whereContains("username","aaatest");
+        query.setLimit(2000);
 
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override

@@ -19,9 +19,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.facebook.appevents.AppEventsLogger;
-import com.parse.Parse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseCrashReporting;
 import com.parse.ParseUser;
 import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.adapter.SectionsPagerAdapter;
