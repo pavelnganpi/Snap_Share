@@ -18,9 +18,8 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.parse.Parse;
+import com.facebook.appevents.AppEventsLogger;
 import com.parse.ParseAnalytics;
-import com.parse.ParseCrashReporting;
 import com.parse.ParseUser;
 import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.adapter.SectionsPagerAdapter;
@@ -209,9 +208,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         //parse analytics
         ParseAnalytics.trackAppOpened(getIntent());
 
-        //crash reporting
-//        ParseCrashReporting.enable(this);
-//        Parse.initialize(this, "LzRx4mxemNXRqfz8gdcdhaKy4xFJmAfRIISIYexa", "gzDVpVNlGUgR8SnHUDiNEOrQtDIFGv2cvFTkBpio");
 
         //check if current user is still in session
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -261,6 +257,22 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                             .setIcon(SectionsPagerAdapter.getIcon(i))
                             .setTabListener(this));
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
     }
 
     @Override
@@ -406,5 +418,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
+
 
 }

@@ -18,17 +18,14 @@ android {
         }
     }
 }
-
-dependencies {
-    compile fileTree(dir: 'libs', include: 'ParseCrashReporting-*.jar')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile fileTree('src/main/libs')
-    compile 'com.parse.bolts:bolts-android:1.+'
-    compile fileTree(dir: 'libs', include: 'Parse-*.jar')
-    compile files('libs/commons-io-2.4.jar')
-    compile files('libs/picasso-2.4.0.jar')
+android {
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 }
+
+
 buildscript {
     repositories {
         mavenCentral()
@@ -39,6 +36,25 @@ buildscript {
     dependencies {
         classpath 'com.parse.tools:gradle:1.+'
     }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: 'ParseCrashReporting-*.jar')
+    compile 'com.android.support:appcompat-v7:22.+'
+    compile fileTree('src/main/libs')
+    compile 'com.parse.bolts:bolts-android:1.+'
+    compile fileTree(dir: 'libs', include: 'Parse-*.jar')
+    compile files('libs/commons-io-2.4.jar')
+    compile files('libs/picasso-2.4.0.jar')
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.1'
+    compile files('libs/Parse-1.9.1.jar')
+    compile files('libs/ParseFacebookUtilsV4-1.9.1.jar')
+    compile (
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.1'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.4.1'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.1']
+    )
 }
 
 parse {

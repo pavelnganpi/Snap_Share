@@ -176,6 +176,7 @@ public class RecipientsActivity extends ActionBarActivity {
         message.put(ParseConstants.KEY_RECIPIENT_IDS, getRecipientIds());
         message.put(ParseConstants.KEY_FILE_TYPE, mFileType);
 
+        //bytes needed since its  a requirement for parseFile
         byte[] fileBytes = FileHelper.getByteArrayFromFile(this, mMedialUri);
 
         if (fileBytes == null) {
