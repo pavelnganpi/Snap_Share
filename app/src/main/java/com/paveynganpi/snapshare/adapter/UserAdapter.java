@@ -1,7 +1,6 @@
 package com.paveynganpi.snapshare.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.paveynganpi.snapshare.R;
-import com.paveynganpi.snapshare.utils.MD5Util;
-import com.paveynganpi.snapshare.utils.ParseConstants;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -59,7 +56,30 @@ public class UserAdapter extends ArrayAdapter<ParseUser> {
         }
 
         ParseUser user = mUsers.get(position);
-        holder.userImageView.setImageResource(R.drawable.avatar_empty);
+//        String email = (user.getEmail()==null)?"":user.getEmail().toLowerCase();;
+//        if(email.equals("")){
+//            holder.userImageView.setImageResource(R.drawable.avatar_empty);
+//        }
+//        else{
+//            String hash = MD5Util.md5Hex(email);
+//            String gravatarUrl = "http://www.gravatar.com/avatar/"+hash + "?s=240&d=404";
+//            Picasso.with(mContext)
+//                    .load(gravatarUrl)
+//                    .placeholder(R.drawable.avatar_empty)
+//                    .into(holder.userImageView);
+//        }
+
+        if(user.get("profileImageUrl")!=null){
+            String profileImageUrlNormalSize = user.get("profileImageUrl").toString();
+                   String profileImageUrl = profileImageUrlNormalSize.substring(0, profileImageUrlNormalSize.length() - 12) + ".jpeg";
+            Picasso.with(mContext)
+                    .load(profileImageUrl)
+                    .into(holder.userImageView);
+        }
+        else{
+            holder.userImageView.setImageResource(R.drawable.avatar_empty);
+        }
+        //Log.d("profileImageUrl",user.get)
         holder.nameLabel.setText(user.getUsername());
 
         //checks if the item at position is checked or not
@@ -93,3 +113,24 @@ public class UserAdapter extends ArrayAdapter<ParseUser> {
     }
 
 }
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("TwitterUsers");
+//        query.whereEqualTo("parseUserId", mUsers.get(position).getObjectId());
+//        query.getFirstInBackground(new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject parseObject, ParseException e) {
+//                if (e == null) {
+//
+//                    //strip off _normal.jpeg to have a high resolution image
+//                    String profileImageUrlNormalSize = parseObject.get("profileImageUrl").toString();
+//
+//                    profileImageUrl = profileImageUrlNormalSize.substring(0, profileImageUrlNormalSize.length() - 12) + ".jpeg";
+//                    Picasso.with(mContext)
+//                            .load(profileImageUrl)
+//                            .into(holder.userImageView);
+//                    Log.d("query in user ", profileImageUrl + "username is" + mUsers.get(position).getUsername());
+//                } else {
+//                    Log.d("error in query", e.getMessage());
+//                    holder.userImageView.setImageResource(R.drawable.avatar_empty);
+//                }
+//            }
+//        });

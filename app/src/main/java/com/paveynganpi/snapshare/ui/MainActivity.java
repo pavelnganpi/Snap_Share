@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -19,16 +20,30 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.facebook.appevents.AppEventsLogger;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+import com.parse.twitter.Twitter;
+import com.paveynganpi.snapshare.POJO.TwitterFolloweePojo;
 import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.adapter.SectionsPagerAdapter;
 import com.paveynganpi.snapshare.utils.ParseConstants;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -50,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public static final int FILE_SIZE_LIMIT = 1024 * 1024 * 10;//10MB
 
     protected Uri mMediaUri;
+    protected ParseUser mCurrentUser;
 
     //listener which runs when any of the items on the alert dialog are clicked. i.e choose picture ...
     protected DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
@@ -217,6 +233,25 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             navigateToLogin();
 
         }
+
+        if(currentUser !=null){
+            mCurrentUser = currentUser;
+            GetTwitterUserFolloweeIds getTwitterUserFolloweeIds = new GetTwitterUserFolloweeIds();
+            getTwitterUserFolloweeIds.execute();
+        }
+//
+//        currentUser.put("profileImageUrl"," http://pbs.twimg.com/profile_images/549803794217717760/iw-iWs1s.jpegusername");
+//        currentUser.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                if(e == null){
+//                    Log.d("updated","successfully saved profileImageUrl");
+//                }
+//                else{
+//                    Log.d("updated","error saving profileImageUrl "+ e.getMessage());
+//                }
+//            }
+//        });
 
         //shows the ic_launcher logo on the action bar
         getSupportActionBar().setLogo(R.drawable.ic_launcher);
@@ -402,7 +437,63 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    public class GetTwitterUserFolloweeIds extends AsyncTask<Object, Void, TwitterFolloweePojo> {
+
+        public StringBuilder sb = new StringBuilder();
+        private Twitter currentTwitterUser = ParseTwitterUtils.getTwitter();
+        public TwitterFolloweePojo twitterFolloweePojo;
+
+        @Override
+        protected TwitterFolloweePojo doInBackground(Object... arg0) {
+            HttpClient client = new DefaultHttpClient();
+            HttpGet verifyGet = new HttpGet(
+                    "https://api.twitter.com/1.1/friends/ids.json?cursor=-1&screen_name="
+                            + currentTwitterUser.getScreenName() + "&stringify_ids=true&count=5000");
+            currentTwitterUser.signRequest(verifyGet);
+            try {
+                HttpResponse response = client.execute(verifyGet);
+
+                //gets response body from response object
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                twitterFolloweePojo = mapper.readValue(sb.toString(), TwitterFolloweePojo.class);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return twitterFolloweePojo;
+        }
+
+        @Override
+        protected void onPostExecute(final TwitterFolloweePojo twitterFolloweePojo) {
+            super.onPostExecute(twitterFolloweePojo);
+            Log.d("post execute ee", "post execute works");
+
+            mCurrentUser.put("followeeIds", twitterFolloweePojo.getFolloweeIds());
+            mCurrentUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        Log.d("post execute", "successfully saved user followeeids in parse");
+
+                    } else {
+                        Log.d("post execute", "error saving user in parse " + e.getMessage());
+                    }
+                }
+            });
+        }
+    }
+
+        @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
@@ -416,5 +507,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
+
 
 }

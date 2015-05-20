@@ -23,7 +23,6 @@ import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.twitter.Twitter;
-import com.paveynganpi.snapshare.POJO.TwitterFolloweePojo;
 import com.paveynganpi.snapshare.POJO.TwitterUserpojo;
 import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.SnapShareApplication;
@@ -44,6 +43,8 @@ public class LoginActivity extends ActionBarActivity {
     protected Button mLoginButton;
     protected TextView mSignUpTextView;
     private ParseObject mTwitterUsers;
+    protected ParseUser mCurrentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,9 +96,10 @@ public class LoginActivity extends ActionBarActivity {
                             dialog.show();//show the dialog
                         } else if (user.isNew()) {
                             SnapShareApplication.updateParseInstallation(user);
+                            mCurrentUser =  ParseUser.getCurrentUser();
 
-                            GetTwitterUserFolloweeIds getTwitterUserFolloweeIds = new GetTwitterUserFolloweeIds();
-                            getTwitterUserFolloweeIds.execute();
+//                            GetTwitterUserFolloweeIds getTwitterUserFolloweeIds = new GetTwitterUserFolloweeIds();
+//                            getTwitterUserFolloweeIds.execute();
 
                             GetTwitterUserDataTask getTwitterUserDataTask = new GetTwitterUserDataTask();
                             getTwitterUserDataTask.execute();
@@ -128,12 +130,13 @@ public class LoginActivity extends ActionBarActivity {
                             startActivity(intent);
                         } else {
                             SnapShareApplication.updateParseInstallation(user);
+                            mCurrentUser =  ParseUser.getCurrentUser();
 
                             GetTwitterUserDataTask getTwitterUserDataTask = new GetTwitterUserDataTask();
                             getTwitterUserDataTask.execute();
 
-                            GetTwitterUserFolloweeIds getTwitterUserFolloweeIds = new GetTwitterUserFolloweeIds();
-                            getTwitterUserFolloweeIds.execute();
+//                            GetTwitterUserFolloweeIds getTwitterUserFolloweeIds = new GetTwitterUserFolloweeIds();
+//                            getTwitterUserFolloweeIds.execute();
 
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -249,14 +252,14 @@ public class LoginActivity extends ActionBarActivity {
             super.onPostExecute(twitterUserpojo);
             Log.d("post execute 1", "post execute works");
 
-            mTwitterUsers.put("twitterId", currentTwitterUser.getUserId());
-            mTwitterUsers.put("twitterFullName", twitterUserpojo.getName());
-            mTwitterUsers.put("parseUserId", ParseUser.getCurrentUser().getObjectId());
+            mCurrentUser.put("twitterId", currentTwitterUser.getUserId());
+            mCurrentUser.put("twitterFullName", twitterUserpojo.getName());
+            mCurrentUser.put("parseUserId", ParseUser.getCurrentUser().getObjectId());
 
             String profileImageUrl = !twitterUserpojo.getDefaulProfileImage()
                     ? twitterUserpojo.getProfileImageUrl() : "";
-            mTwitterUsers.put("profileImageUrl", profileImageUrl);
-            mTwitterUsers.saveInBackground(new SaveCallback() {
+            mCurrentUser.put("profileImageUrl", profileImageUrl);
+            mCurrentUser.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
@@ -270,61 +273,61 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
-    public class GetTwitterUserFolloweeIds extends AsyncTask<Object, Void, TwitterFolloweePojo> {
-
-        public StringBuilder sb = new StringBuilder();
-        private Twitter currentTwitterUser = ParseTwitterUtils.getTwitter();
-        public TwitterFolloweePojo twitterFolloweePojo;
-
-        @Override
-        protected TwitterFolloweePojo doInBackground(Object... arg0) {
-            HttpClient client = new DefaultHttpClient();
-            HttpGet verifyGet = new HttpGet(
-                    "https://api.twitter.com/1.1/friends/ids.json?cursor=-1&screen_name="
-                            + currentTwitterUser.getScreenName() + "&stringify_ids=true&count=5000");
-            currentTwitterUser.signRequest(verifyGet);
-            try {
-                HttpResponse response = client.execute(verifyGet);
-
-                //gets response body from response object
-                BufferedReader reader =
-                        new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                twitterFolloweePojo = mapper.readValue(sb.toString(), TwitterFolloweePojo.class);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return twitterFolloweePojo;
-        }
-
-        @Override
-        protected void onPostExecute(final TwitterFolloweePojo twitterFolloweePojo) {
-            super.onPostExecute(twitterFolloweePojo);
-            Log.d("post execute ee", "post execute works");
-
-            mTwitterUsers.put("followeeIds", twitterFolloweePojo.getFolloweeIds());
-            mTwitterUsers.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        Log.d("post execute", "successfully saved user in parse");
-
-                    } else {
-                        Log.d("post execute", "error saving user in parse " + e.getMessage());
-                    }
-                }
-            });
-        }
-    }
+//    public class GetTwitterUserFolloweeIds extends AsyncTask<Object, Void, TwitterFolloweePojo> {
+//
+//        public StringBuilder sb = new StringBuilder();
+//        private Twitter currentTwitterUser = ParseTwitterUtils.getTwitter();
+//        public TwitterFolloweePojo twitterFolloweePojo;
+//
+//        @Override
+//        protected TwitterFolloweePojo doInBackground(Object... arg0) {
+//            HttpClient client = new DefaultHttpClient();
+//            HttpGet verifyGet = new HttpGet(
+//                    "https://api.twitter.com/1.1/friends/ids.json?cursor=-1&screen_name="
+//                            + currentTwitterUser.getScreenName() + "&stringify_ids=true&count=5000");
+//            currentTwitterUser.signRequest(verifyGet);
+//            try {
+//                HttpResponse response = client.execute(verifyGet);
+//
+//                //gets response body from response object
+//                BufferedReader reader =
+//                        new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
+//                String line = null;
+//                while ((line = reader.readLine()) != null) {
+//                    sb.append(line);
+//                }
+//
+//                ObjectMapper mapper = new ObjectMapper();
+//                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//                twitterFolloweePojo = mapper.readValue(sb.toString(), TwitterFolloweePojo.class);
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            return twitterFolloweePojo;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final TwitterFolloweePojo twitterFolloweePojo) {
+//            super.onPostExecute(twitterFolloweePojo);
+//            Log.d("post execute ee", "post execute works");
+//
+//            mCurrentUser.put("followeeIds", twitterFolloweePojo.getFolloweeIds());
+//            mCurrentUser.saveInBackground(new SaveCallback() {
+//                @Override
+//                public void done(ParseException e) {
+//                    if (e == null) {
+//                        Log.d("post execute", "successfully saved user in parse");
+//
+//                    } else {
+//                        Log.d("post execute", "error saving user in parse " + e.getMessage());
+//                    }
+//                }
+//            });
+//        }
+//    }
 
     private void navigateToLogin() {
         //start the loginActivity

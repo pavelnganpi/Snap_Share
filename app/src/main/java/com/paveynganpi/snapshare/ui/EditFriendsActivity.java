@@ -66,11 +66,10 @@ public class EditFriendsActivity extends ActionBarActivity {
         mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
         setSupportProgressBarIndeterminateVisibility(true);
 
-
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.orderByAscending(ParseConstants.KEY_USERNAME);
-        query.whereContains("username","aaatest");
-        query.setLimit(2000);
+        //query.orderByAscending(ParseConstants.KEY_USERNAME);
+        query.addDescendingOrder(ParseConstants.KEY_CREATED_AT);
+        query.setLimit(1000);
 
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
