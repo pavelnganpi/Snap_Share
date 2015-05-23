@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -43,8 +42,7 @@ public class LoginActivity extends ActionBarActivity {
     protected EditText mPassword;
     protected Button mLoginButton;
     protected TextView mSignUpTextView;
-    private ParseObject mTwitterUsers;
-    protected ParseUser mCurrentUser;
+    protected ParseUser mParseCurrentUser;
 
 
     @Override
@@ -58,12 +56,6 @@ public class LoginActivity extends ActionBarActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-//        if (Build.VERSION.SDK_INT >= 9) {
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//
-//            StrictMode.setThreadPolicy(policy);
-//        }
-        mTwitterUsers = new ParseObject("TwitterUsers");
         mSignUpTextView = (TextView) findViewById(R.id.signUpText);
 
         mSignUpTextView.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +89,7 @@ public class LoginActivity extends ActionBarActivity {
                             dialog.show();//show the dialog
                         } else if (user.isNew()) {
                             SnapShareApplication.updateParseInstallation(user);
-                            mCurrentUser = ParseUser.getCurrentUser();
+                            mParseCurrentUser = ParseUser.getCurrentUser();
 
                             GetTwitterUserFolloweeIds getTwitterUserFolloweeIds = new GetTwitterUserFolloweeIds();
                             getTwitterUserFolloweeIds.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -191,14 +183,14 @@ public class LoginActivity extends ActionBarActivity {
             super.onPostExecute(twitterUserpojo);
             Log.d("post execute 1", "post execute works");
 
-            mCurrentUser.put("twitterId", currentTwitterUser.getUserId());
-            mCurrentUser.put("twitterFullName", twitterUserpojo.getName());
-            mCurrentUser.put("parseUserId", ParseUser.getCurrentUser().getObjectId());
+            mParseCurrentUser.put("twitterId", currentTwitterUser.getUserId());
+            mParseCurrentUser.put("twitterFullName", twitterUserpojo.getName());
+            mParseCurrentUser.put("parseUserId", ParseUser.getCurrentUser().getObjectId());
 
             String profileImageUrl = !twitterUserpojo.getDefaulProfileImage()
                     ? twitterUserpojo.getProfileImageUrl() : "";
-            mCurrentUser.put("profileImageUrl", profileImageUrl);
-            mCurrentUser.saveInBackground(new SaveCallback() {
+            mParseCurrentUser.put("profileImageUrl", profileImageUrl);
+            mParseCurrentUser.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
@@ -253,15 +245,15 @@ public class LoginActivity extends ActionBarActivity {
             super.onPostExecute(twitterFolloweePojo);
             Log.d("post execute ee", "post execute works");
 
-            mCurrentUser.put("followeeIds", twitterFolloweePojo.getFolloweeIds());
-            mCurrentUser.saveInBackground(new SaveCallback() {
+            mParseCurrentUser.put("followeeIds", twitterFolloweePojo.getFolloweeIds());
+            mParseCurrentUser.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        Log.d("post execute", "successfully saved user in parse");
+                        Log.d("post execute", "successfully saved followeeids in parse");
 
                     } else {
-                        Log.d("post execute", "error saving user in parse " + e.getMessage());
+                        Log.d("post execute", "error saving followee ids in parse " + e.getMessage());
                     }
                 }
             });
