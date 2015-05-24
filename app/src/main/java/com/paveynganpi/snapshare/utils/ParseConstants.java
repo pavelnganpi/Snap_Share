@@ -18,6 +18,12 @@ public final class ParseConstants {
     public static final String KEY_FILE = "file";
     public static final String KEY_FILE_TYPE = "fileType";
     public static final String KEY_CREATED_AT = "createdAt";
+    public static final String KEY_TWITTER_ID = "twitterId";
+    public static final String KEY_TWITTER_FULL_NAME = "twitterFullName";
+    public static final String KEY_PARSE_USER_ID = "parseUserId";
+    public static final String KEY_PROFILE_IMAGE_URL = "profileImageUrl";
+    public static final String KEY_FOLLOWEE_IDS = "followeeIds";
+    public static final String KEY_FOLLOW_RELATION = "FollowRelation";
 
     public static final String TYPE_IMAGE = "image";
     public static final String TYPE_VIDEO = "video";
