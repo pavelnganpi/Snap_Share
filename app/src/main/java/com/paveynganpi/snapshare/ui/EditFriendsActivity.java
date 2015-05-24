@@ -10,12 +10,12 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -33,17 +33,16 @@ public class EditFriendsActivity extends ActionBarActivity {
 
     private static final String TAG = EditFriendsActivity.class.getSimpleName();
     protected List<ParseUser> mUsers;
-    protected ListView mListView;
     protected ParseRelation<ParseUser> mFriendsRelation;
     protected ParseUser mCurrentUser;
     protected GridView mGridView;
+    protected ParseObject followRelation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.user_grid);
-        // myList=(ListView)findViewById(android.R.id.list);//instantiate mylist
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mGridView = (GridView) findViewById(R.id.friendsGrid);
@@ -114,15 +113,6 @@ public class EditFriendsActivity extends ActionBarActivity {
 
     }
 
-    //gets an instance of the listview, returns a list view which is used to be able to call
-    // getListView().setChoiceMode(mListView.CHOICE_MODE_MULTIPLE);
-    protected ListView getListView() {
-        if (mListView == null) {
-            mListView = (ListView) findViewById(android.R.id.list);
-        }
-        return mListView;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -175,10 +165,28 @@ public class EditFriendsActivity extends ActionBarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            ParseUser followee = mUsers.get(position);
+
             ImageView checkImageView = (ImageView) view.findViewById(R.id.checkImageView);
             if (mGridView.isItemChecked(position)) {
                 //add friends
                 mFriendsRelation.add(mUsers.get(position));//add the friend at that position
+
+                followRelation = new ParseObject(ParseConstants.KEY_FOLLOW_RELATION);
+                followRelation.put("from", ParseUser.getCurrentUser());
+                followRelation.put("to", followee);
+
+                followRelation.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e == null){
+                            Log.d("followRelation","success");
+                        }
+                        else{
+                            Log.d("followRelation","error "+ e.getMessage());
+                        }
+                    }
+                });
                 checkImageView.setVisibility(View.VISIBLE);
                 sendFolloweePushNotifications(position);
 
@@ -196,6 +204,20 @@ public class EditFriendsActivity extends ActionBarActivity {
 
                         Log.e(TAG, e.getMessage());
 
+                    }
+
+                }
+            });
+            followee.saveInBackground(new SaveCallback() {//save in parse
+                @Override
+                public void done(ParseException e) {
+
+                    if (e != null) {
+
+                        Log.e(TAG, e.getMessage());
+
+                    } else {
+                        Log.e("follower saving", "success saving follower to parse");
                     }
 
                 }

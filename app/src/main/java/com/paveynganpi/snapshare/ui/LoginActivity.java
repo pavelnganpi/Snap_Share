@@ -26,6 +26,7 @@ import com.paveynganpi.snapshare.POJO.TwitterFolloweePojo;
 import com.paveynganpi.snapshare.POJO.TwitterUserpojo;
 import com.paveynganpi.snapshare.R;
 import com.paveynganpi.snapshare.SnapShareApplication;
+import com.paveynganpi.snapshare.utils.ParseConstants;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -43,6 +44,8 @@ public class LoginActivity extends ActionBarActivity {
     protected Button mLoginButton;
     protected TextView mSignUpTextView;
     protected ParseUser mParseCurrentUser;
+    protected String TWITTER_USERS_SHOW_URL ="https://api.twitter.com/1.1/users/show.json?screen_name=";
+    protected String TWITTER_FRIENDS_IDS_URL = "https://api.twitter.com/1.1/friends/ids.json?cursor=-1&screen_name=";
 
 
     @Override
@@ -153,7 +156,7 @@ public class LoginActivity extends ActionBarActivity {
         protected TwitterUserpojo doInBackground(Object... arg0) {
             HttpClient client = new DefaultHttpClient();
             HttpGet verifyGet = new HttpGet(
-                    "https://api.twitter.com/1.1/users/show.json?screen_name=" + currentTwitterUser.getScreenName());
+                    TWITTER_USERS_SHOW_URL + currentTwitterUser.getScreenName());
             currentTwitterUser.signRequest(verifyGet);
             try {
                 HttpResponse response = client.execute(verifyGet);
@@ -183,13 +186,13 @@ public class LoginActivity extends ActionBarActivity {
             super.onPostExecute(twitterUserpojo);
             Log.d("post execute 1", "post execute works");
 
-            mParseCurrentUser.put("twitterId", currentTwitterUser.getUserId());
-            mParseCurrentUser.put("twitterFullName", twitterUserpojo.getName());
-            mParseCurrentUser.put("parseUserId", ParseUser.getCurrentUser().getObjectId());
+            mParseCurrentUser.put(ParseConstants.KEY_TWITTER_ID, currentTwitterUser.getUserId());
+            mParseCurrentUser.put(ParseConstants.KEY_TWITTER_FULL_NAME, twitterUserpojo.getName());
+            mParseCurrentUser.put(ParseConstants.KEY_PARSE_USER_ID, ParseUser.getCurrentUser().getObjectId());
 
             String profileImageUrl = !twitterUserpojo.getDefaulProfileImage()
                     ? twitterUserpojo.getProfileImageUrl() : "";
-            mParseCurrentUser.put("profileImageUrl", profileImageUrl);
+            mParseCurrentUser.put(ParseConstants.KEY_PROFILE_IMAGE_URL, profileImageUrl);
             mParseCurrentUser.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -214,7 +217,7 @@ public class LoginActivity extends ActionBarActivity {
         protected TwitterFolloweePojo doInBackground(Object... arg0) {
             HttpClient client = new DefaultHttpClient();
             HttpGet verifyGet = new HttpGet(
-                    "https://api.twitter.com/1.1/friends/ids.json?cursor=-1&screen_name="
+                    TWITTER_FRIENDS_IDS_URL
                             + currentTwitterUser.getScreenName() + "&stringify_ids=true&count=5000");
             currentTwitterUser.signRequest(verifyGet);
             try {
@@ -245,7 +248,7 @@ public class LoginActivity extends ActionBarActivity {
             super.onPostExecute(twitterFolloweePojo);
             Log.d("post execute ee", "post execute works");
 
-            mParseCurrentUser.put("followeeIds", twitterFolloweePojo.getFolloweeIds());
+            mParseCurrentUser.put(ParseConstants.KEY_FOLLOWEE_IDS, twitterFolloweePojo.getFolloweeIds());
             mParseCurrentUser.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
